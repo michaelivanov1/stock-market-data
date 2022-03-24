@@ -34,7 +34,7 @@ const FetchDataComponent = (props) => {
             : setSelection("");
     };
 
-    // this is to load data before the component renders 
+    
     useEffect(() => {
         fetchUsers();
     }, []);
