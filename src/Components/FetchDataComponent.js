@@ -11,8 +11,10 @@ import {
 import theme from "../theme";
 
 
-const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=PLTR&interval=5min&apikey=8THF8YFBPG4UU0CT`;
+const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=PLTR&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
 //const url2 = `https://api.exchangerate-api.com/v4/latest/USD`;
+
+const fetchAllTickersFromNYSEURL = `https://raw.githubusercontent.com/michaelivanov1/stock-market-data/master/data-sets/all-nyse-tickers-2022.json`;
 
 const FetchDataComponent = (props) => {
 
@@ -21,7 +23,7 @@ const FetchDataComponent = (props) => {
     }
 
     const initialState = {
-        getTicker: [],
+        allTickersFromNYSEArray: [],
     };
 
     const reducer = (state, newState) => ({ ...state, ...newState });
@@ -36,33 +38,33 @@ const FetchDataComponent = (props) => {
 
     
     useEffect(() => {
-        fetchUsers();
+        fetchData();
     }, []);
 
-    const fetchUsers = async () => {
+    const fetchData = async () => {
         try {
             setState({
                 contactServer: true,
-                snackBarMsg: "Attempting to load data from server...",
             });
+            sendMessageToSnackbar("Attempting to load data from server...");
 
-            let response = await fetch(url)
-            let data = await response.json();
+            let fetchAllTickersFromNYSEResponse = await fetch(fetchAllTickersFromNYSEURL);
+            let fetchAllTickersFromNYSEJson = await fetchAllTickersFromNYSEResponse.json();
 
             // testing
+            let response = await fetch(url);
+            let data = await response.json();
             console.log(data["Time Series (Daily)"]['2022-03-23']['1. open']);
 
             sendMessageToSnackbar("Data loaded");
 
             setState({
-
-                //getTicker: data.map((ticker) => ticker.rates),
-                // getDateTest: data["Time Series (Daily)"]['2022-01-20'],
+                allTickersFromNYSEArray: fetchAllTickersFromNYSEJson.map((ticker) => ticker.Symbol),
             });
 
         } catch (error) {
             console.log(`error pulling data: ${error}`);
-            sendMessageToSnackbar("Data loaded");
+            sendMessageToSnackbar("Error pulling ticker data");
         }
     };
 
@@ -83,14 +85,14 @@ const FetchDataComponent = (props) => {
                 <CardContent>
                     <Autocomplete
                         data-testid="autocomplete"
-                        options={state.getTicker}
+                        options={state.allTickersFromNYSEArray}
                         getOptionLabel={(option) => option}
                         style={{ width: 300, margin: 'auto', color: theme.palette.primary.main }}
                         onChange={onChange}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label="choose ticker"
+                                label="search by ticker"
                                 variant="outlined"
                                 fullWidth
                             />
