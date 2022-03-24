@@ -1,6 +1,5 @@
-import React, { useState, useReducer } from "react";
+import React, { useReducer } from "react";
 import { Route, Link, Routes } from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import HomeComponent from "./Components/HomeComponent";
@@ -8,15 +7,23 @@ import FetchDataComponent from "./Components/FetchDataComponent";
 import {
   Toolbar,
   AppBar,
-  Menu,
-  MenuItem,
-  IconButton,
   Typography,
   Snackbar,
 } from "@mui/material";
 
-const App = () => {
+import Box from '@mui/material/Box';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import HomeIcon from '@mui/icons-material/Home';
+import SearchIcon from '@mui/icons-material/Search';
+import ListSubheader from "@mui/material/ListSubheader";
+import Divider from '@mui/material/Divider';
 
+
+const App = () => {
 
   const initialState = {
     snackBarMsg: "",
@@ -37,47 +44,51 @@ const App = () => {
     setState({ snackbarMsg: msg, gotData: true });
   };
 
-  const [anchorEl, setAnchorEl] = useState(null);
-
-
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar position="static">
+      <AppBar style={{ position: 'sticky', background: 'white', width: '100%', boxShadow: 'none', borderBottom: '1px solid black', marginBottom: 20 }}>
         <Toolbar>
-          <Typography variant="h6" color="inherit">
+          <Typography variant="h4" color="black" align="center" width="100%">
             Stock Market API
           </Typography>
-          <IconButton
-            onClick={handleClick}
-            color="inherit"
-            style={{ marginLeft: "auto", paddingRight: "1vh" }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose} component={Link} to="/home">
-              Home
-            </MenuItem>
-            <MenuItem onClick={handleClose} component={Link} to="/main">
-              Fetch Data
-            </MenuItem>
-          </Menu>
         </Toolbar>
       </AppBar>
+
+      {/* bgcolor: 'background.paper' */}
+      <Box sx={styles.boxStyles}>
+        <List direction="column">
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/home">
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Home" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListSubheader>Search Methods</ListSubheader>
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/main">
+              <ListItemIcon>
+                <SearchIcon />
+              </ListItemIcon>
+              <ListItemText primary="Search Individual Stocks" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton component={Link} to="/main">
+              <ListItemIcon>
+                <SearchIcon />
+              </ListItemIcon>
+              <ListItemText primary="Search ETFs" />
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+        </List>
+      </Box>
+
       <div>
         <Routes>
           <Route path="/" element={<HomeComponent dataFromChild={dataFromChild} />} />
@@ -94,5 +105,17 @@ const App = () => {
     </ThemeProvider>
   );
 };
-export default App;
 
+const styles = {
+  boxStyles: {
+    maxWidth: '20%',
+    position: 'absolute',
+
+    "@media (max-width: 850px)": {
+      maxWidth: '100%',
+      position: 'relative',
+    }
+  }
+}
+
+export default App;
