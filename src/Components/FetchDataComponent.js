@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import theme from "../theme";
 
-
 const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=PLTR&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
 //const url2 = `https://api.exchangerate-api.com/v4/latest/USD`;
 
