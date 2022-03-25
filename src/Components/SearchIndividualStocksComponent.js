@@ -139,7 +139,7 @@ const SearchIndividualStocksComponent = (props) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Card style={{ marginTop: "10vh" }}>
+            <Card style={{ marginTop: "10vh", marginLeft: '20%', width: "60%", border: '1px solid black' }}>
                 <RadioGroup
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"
@@ -196,25 +196,25 @@ const SearchIndividualStocksComponent = (props) => {
                             )}
                         />
                     }
-                    
                     <Typography variant="h6" color="green" style={{ textAlign: 'center' }}>
                         {state.grabSelectedTickersName}
                     </Typography>
-
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <Grid container justifyContent="space-around">
-                            <KeyboardDatePicker
-                                format="yyyy-MM-dd"
-                                margin="normal"
-                                label="Pick Date"
-                                value={selectedDate}
-                                inputValue={dateInputValue}
-                                onChange={handleDateChange}
-                            />
-                        </Grid>
-                    </MuiPickersUtilsProvider>
                 </CardContent>
-            </Card>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container justifyContent="space-around">
+                        {/* ERROR HERE: the search buttons on the left move when code is uncommented */}
+                        <KeyboardDatePicker
+                            format="yyyy-MM-dd"
+                            margin="normal"
+                            label="Pick Date"
+                            value={selectedDate}
+                            inputValue={dateInputValue}
+                            onChange={handleDateChange}
+                            disableFuture
+                        />
+                    </Grid>
+                </MuiPickersUtilsProvider>
+            </Card>                 
         </ThemeProvider>
     );
 };
