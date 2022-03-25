@@ -8,6 +8,6 @@ Tickers are fetched from JSON file(s) that are in the data-sets folder in this r
 HOW TO RUN: 
 1) download all files and install all dependencies 
 2) get an API key from https://www.alphavantage.co/
-3) in a .env file create a variable called REACT_APP_API_KEY and assign it your API key
+3) in a .env file create a variable called REACT_APP_API_KEY and assign it your API key.
       example: REACT_APP_API_KEY = apikeyhere123
 4) since this is still in development, run on a local server: npm start
