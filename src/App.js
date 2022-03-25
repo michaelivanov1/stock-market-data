@@ -3,7 +3,7 @@ import { Route, Link, Routes } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import HomeComponent from "./Components/HomeComponent";
-import FetchDataComponent from "./Components/FetchDataComponent";
+import SearchIndividualStocksComponent from "./Components/SearchIndividualStocksComponent";
 import {
   Toolbar,
   AppBar,
@@ -47,10 +47,10 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar style={{ position: 'sticky', background: 'white', width: '100%', boxShadow: 'none', borderBottom: '1px solid black', marginBottom: 20 }}>
+      <AppBar style={{ position: 'sticky', background: 'white', width: '100%', boxShadow: 'none', borderBottom: '1px solid black', marginBottom: 30 }}>
         <Toolbar>
           <Typography variant="h4" color="black" align="center" width="100%">
-            Stock Market API
+            Fetch Stock Market Data
           </Typography>
         </Toolbar>
       </AppBar>
@@ -93,7 +93,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomeComponent dataFromChild={dataFromChild} />} />
           <Route path="/home" element={<HomeComponent dataFromChild={dataFromChild} />} />
-          <Route path="/main" element={<FetchDataComponent dataFromChild={dataFromChild} />} />
+          <Route path="/main" element={<SearchIndividualStocksComponent dataFromChild={dataFromChild} />} />
         </Routes>
       </div>
       <Snackbar

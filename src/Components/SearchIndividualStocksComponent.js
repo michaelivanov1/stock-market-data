@@ -10,18 +10,24 @@ import {
     Typography,
     Autocomplete,
     TextField,
+    TableBody,
 } from "@mui/material";
 import theme from "../theme";
+
+import Table from '@mui/material/Table';
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+
 // helper that holds json data sets
 import { dataSetHelper } from "../DataSetHelper/dataSetHelper";
 
-//const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=PLTR&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
-//const url2 = `https://api.exchangerate-api.com/v4/latest/USD`;
 
 const fetchAllTickersFromNYSEURL = dataSetHelper.NYSETickers;
 const fetchAllTickersFromNASDAQURL = dataSetHelper.NASDAQTickers;
 
-const FetchDataComponent = (props) => {
+const SearchIndividualStocksComponent = (props) => {
 
     const sendMessageToSnackbar = (msg) => {
         props.dataFromChild(msg);
@@ -40,7 +46,7 @@ const FetchDataComponent = (props) => {
     };
 
     useEffect(() => {
-        fetchData();
+        fetchJsonDataSets();
     }, []);
 
     const reducer = (state, newState) => ({ ...state, ...newState });
@@ -54,8 +60,10 @@ const FetchDataComponent = (props) => {
 
         if (state.userSelectedNYSE) {
             findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker == selectedOption);
+            fetchAlphaVantageData(findStockNameByTicker.ticker);
         } else if (state.userSelectedNASDAQ) {
             findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker == selectedOption);
+            fetchAlphaVantageData(findStockNameByTicker.ticker);
         }
 
         if (selectedOption) {
@@ -66,7 +74,7 @@ const FetchDataComponent = (props) => {
     };
 
 
-    const fetchData = async () => {
+    const fetchJsonDataSets = async () => {
         try {
             setState({
                 contactServer: true,
@@ -78,11 +86,6 @@ const FetchDataComponent = (props) => {
 
             let fetAllTickersFromNASDAQResponse = await fetch(fetchAllTickersFromNASDAQURL);
             let fetchAllTickersFromNASDAQJson = await fetAllTickersFromNASDAQResponse.json();
-
-            // testing
-            // let response = await fetch(url);
-            // let data = await response.json();
-            // console.log(data["Time Series (Daily)"]['2022-03-23']['1. open']);
 
             sendMessageToSnackbar("Data loaded");
 
@@ -98,6 +101,21 @@ const FetchDataComponent = (props) => {
             sendMessageToSnackbar("Error pulling ticker data");
         }
     };
+
+    const fetchAlphaVantageData = async (ticker) => {
+        try {
+            let alphavantageUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
+
+            let alphavantageUrlResponse = await fetch(alphavantageUrl);
+            let alphavantageUrlJson = await alphavantageUrlResponse.json();
+
+            // TODO: add ability for user to enter any date in
+            console.log(`data retrieved: ${JSON.stringify(alphavantageUrlJson["Time Series (Daily)"]['2022-03-24'])}`);
+            sendMessageToSnackbar(`Found data for ${ticker}`);
+        } catch (error) {
+            sendMessageToSnackbar(`Null data for ticker ${ticker}`);
+        }
+    }
 
     // function to set states for each radio button
     const handleRadioButtonChange = (event) => {
@@ -116,7 +134,6 @@ const FetchDataComponent = (props) => {
     return (
         <ThemeProvider theme={theme}>
             <Card style={{ marginTop: "10vh" }}>
-
                 <RadioGroup
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"
@@ -176,10 +193,11 @@ const FetchDataComponent = (props) => {
                     <Typography variant="h6" color="green" style={{ textAlign: 'center' }}>
                         {selection}
                     </Typography>
+
                 </CardContent>
             </Card>
         </ThemeProvider>
     );
 };
 
-export default FetchDataComponent;
+export default SearchIndividualStocksComponent;
