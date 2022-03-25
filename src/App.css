@@ -1,5 +1,5 @@
 /* remove whitespace all around webpage */
-body {
+body, html {
   margin: 0;
   width: 100%;
 }

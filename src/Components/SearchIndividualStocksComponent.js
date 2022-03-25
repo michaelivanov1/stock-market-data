@@ -52,17 +52,17 @@ const SearchIndividualStocksComponent = (props) => {
     const reducer = (state, newState) => ({ ...state, ...newState });
     const [state, setState] = useReducer(reducer, initialState);
 
-    // holds selection of whichever ticker was chosen
+    // holds the stock name based on what ticker was selected
     const [selection, setSelection] = useState("");
     const autocompleteOnChange = (e, selectedOption) => {
 
         let findStockNameByTicker = "";
 
         if (state.userSelectedNYSE) {
-            findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker == selectedOption);
+            findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedOption);
             fetchAlphaVantageData(findStockNameByTicker.ticker);
         } else if (state.userSelectedNASDAQ) {
-            findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker == selectedOption);
+            findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker === selectedOption);
             fetchAlphaVantageData(findStockNameByTicker.ticker);
         }
 
