@@ -20,8 +20,17 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-// helper that holds json data sets
-import { dataSetHelper } from "../DataSetHelper/dataSetHelper";
+// imports for user to pick date
+import 'date-fns';
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+// import a helper that houses some useful functions
+import getTodaysDate, { dataSetHelper } from "../Helpers/helpers";
 
 
 const fetchAllTickersFromNYSEURL = dataSetHelper.NYSETickers;
@@ -29,6 +38,7 @@ const fetchAllTickersFromNASDAQURL = dataSetHelper.NASDAQTickers;
 
 const SearchIndividualStocksComponent = (props) => {
 
+    // send snackbar messages to App.js
     const sendMessageToSnackbar = (msg) => {
         props.dataFromChild(msg);
     }
@@ -37,43 +47,50 @@ const SearchIndividualStocksComponent = (props) => {
         // hold all json data fetched from json data sets in "data-sets" folder in my github repo
         allDataFromNYSEArray: [],
         allDataFromNASDAQArray: [],
-        // hold just the ticker values fetched from the json data sets
+        // hold just all the ticker values fetched from the json data sets
         allTickersFromNYSEArray: [],
         allTickersFromNASDAQArray: [],
         // bools to determine which data to display
         userSelectedNYSE: false,
         userSelectedNASDAQ: false,
+        // holds corresponding stock name based on ticker entered
+        grabSelectedTickersName: "",
+        // holds user selected date
+        grabSelectedDate: getTodaysDate(),
     };
+
+    const reducer = (state, newState) => ({ ...state, ...newState });
+    const [state, setState] = useReducer(reducer, initialState);
 
     useEffect(() => {
         fetchJsonDataSets();
     }, []);
 
-    const reducer = (state, newState) => ({ ...state, ...newState });
-    const [state, setState] = useReducer(reducer, initialState);
 
-    // holds the stock name based on what ticker was selected
-    const [selection, setSelection] = useState("");
-    const autocompleteOnChange = (e, selectedOption) => {
+    // set dates based on user selection
+    const handleDateChange = (date) => {
+        setState({ grabSelectedDate: date });
+    }
+    
+    // TODO: format the date correctly: yyyy-mm-dd
+    // TODO: get rid of time from the date. i only want the yyyy-mm-dd values
+    console.log(`selectedDate: ${state.grabSelectedDate}`)
 
+    // grab stocks name based on selected ticker
+    const autocompleteOnChange = (e, selectedTicker) => {
         let findStockNameByTicker = "";
 
         if (state.userSelectedNYSE) {
-            findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedOption);
+            findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedTicker);
             fetchAlphaVantageData(findStockNameByTicker.ticker);
         } else if (state.userSelectedNASDAQ) {
-            findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker === selectedOption);
+            findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker === selectedTicker);
             fetchAlphaVantageData(findStockNameByTicker.ticker);
         }
-
-        if (selectedOption) {
-            setSelection(`You selected ${JSON.stringify(findStockNameByTicker.name)}`)
-        } else {
-            setSelection("");
-        }
+        if (selectedTicker) setState({ grabSelectedTickersName: findStockNameByTicker.name })
     };
 
-
+    // grab the JSON data sets and load them. called in useEffect
     const fetchJsonDataSets = async () => {
         try {
             setState({
@@ -87,7 +104,7 @@ const SearchIndividualStocksComponent = (props) => {
             let fetAllTickersFromNASDAQResponse = await fetch(fetchAllTickersFromNASDAQURL);
             let fetchAllTickersFromNASDAQJson = await fetAllTickersFromNASDAQResponse.json();
 
-            sendMessageToSnackbar("Data loaded");
+            sendMessageToSnackbar("All tickers loaded");
 
             setState({
                 allDataFromNYSEArray: fetchAllTickersFromNYSEJson,
@@ -97,11 +114,12 @@ const SearchIndividualStocksComponent = (props) => {
             });
 
         } catch (error) {
-            console.log(`error pulling data: ${error}`);
-            sendMessageToSnackbar("Error pulling ticker data");
+            console.log(`error loading JSON data sets: ${error}`);
+            sendMessageToSnackbar("Error loading JSON data sets");
         }
     };
 
+    // call alphavantage API and parse url based on user input
     const fetchAlphaVantageData = async (ticker) => {
         try {
             let alphavantageUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
@@ -117,7 +135,7 @@ const SearchIndividualStocksComponent = (props) => {
         }
     }
 
-    // function to set states for each radio button
+    // set states for each radio button
     const handleRadioButtonChange = (event) => {
         if (event.target.value === "nyse") {
             setState(state.userSelectedNYSE = true);
@@ -191,8 +209,24 @@ const SearchIndividualStocksComponent = (props) => {
                         />
                     }
                     <Typography variant="h6" color="green" style={{ textAlign: 'center' }}>
-                        {selection}
+                        {state.grabSelectedTickersName}
                     </Typography>
+
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <Grid container justifyContent="space-around">
+                            <KeyboardDatePicker
+                                // disableToolbar
+                                // variant=dialog or inline
+                                variant="dialog"
+                                format="yyy-MM-dd"
+                                margin="normal"
+                                id="date-picker"
+                                label="Pick Date"
+                                value={state.grabSelectedDate}
+                                onChange={handleDateChange}
+                            />
+                        </Grid>
+                    </MuiPickersUtilsProvider>
 
                 </CardContent>
             </Card>

@@ -40,6 +40,7 @@ const App = () => {
     setState({ gotData: false });
   };
 
+  // fetch data from child components and use it in snackbar
   const dataFromChild = (msg) => {
     setState({ snackbarMsg: msg, gotData: true });
   };
@@ -58,7 +59,8 @@ const App = () => {
       {/* bgcolor: 'background.paper' */}
       <Box sx={styles.boxStyles}>
         <List direction="column">
-          <ListItem disablePadding>
+          {/* optional: can add disablePadding property on ListItem */}
+          <ListItem>
             <ListItemButton component={Link} to="/home">
               <ListItemIcon>
                 <HomeIcon />
@@ -68,7 +70,7 @@ const App = () => {
           </ListItem>
           <Divider />
           <ListSubheader>Search Methods</ListSubheader>
-          <ListItem disablePadding>
+          <ListItem>
             <ListItemButton component={Link} to="/main">
               <ListItemIcon>
                 <SearchIcon />
@@ -77,7 +79,7 @@ const App = () => {
             </ListItemButton>
           </ListItem>
           <Divider />
-          <ListItem disablePadding>
+          <ListItem>
             <ListItemButton component={Link} to="/main">
               <ListItemIcon>
                 <SearchIcon />
