@@ -10,17 +10,9 @@ import {
     Typography,
     Autocomplete,
     TextField,
-    TableBody,
 } from "@mui/material";
 import theme from "../theme";
-
-import Table from '@mui/material/Table';
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-
-// imports for user to pick date
+// imports for date picker
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
@@ -28,11 +20,12 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-
 // import a helper that houses some useful functions
-import getTodaysDate, { dataSetHelper } from "../Helpers/helpers";
+import { dataSetHelper } from "../Helpers/helpers";
+// for formatting date
+import moment from "moment";
 
-
+// grab JSON url's from helper file
 const fetchAllTickersFromNYSEURL = dataSetHelper.NYSETickers;
 const fetchAllTickersFromNASDAQURL = dataSetHelper.NASDAQTickers;
 
@@ -55,10 +48,7 @@ const SearchIndividualStocksComponent = (props) => {
         userSelectedNASDAQ: false,
         // holds corresponding stock name based on ticker entered
         grabSelectedTickersName: "",
-        // holds user selected date
-        grabSelectedDate: getTodaysDate(),
     };
-
     const reducer = (state, newState) => ({ ...state, ...newState });
     const [state, setState] = useReducer(reducer, initialState);
 
@@ -66,20 +56,19 @@ const SearchIndividualStocksComponent = (props) => {
         fetchJsonDataSets();
     }, []);
 
-
-    // set dates based on user selection
-    const handleDateChange = (date) => {
-        setState({ grabSelectedDate: date });
+    // hooks to hold formatted date based on user input
+    const [selectedDate, setDate] = useState(moment());
+    const [dateInputValue, setDateInputValue] = useState(moment().format("YYYY-MM-DD"));
+    // set the date based on user input
+    const handleDateChange = (date, value) => {
+        setDate(date);
+        setDateInputValue(value);
+        console.log(`date entered: ${value}`);
     }
-    
-    // TODO: format the date correctly: yyyy-mm-dd
-    // TODO: get rid of time from the date. i only want the yyyy-mm-dd values
-    console.log(`selectedDate: ${state.grabSelectedDate}`)
 
     // grab stocks name based on selected ticker
     const autocompleteOnChange = (e, selectedTicker) => {
         let findStockNameByTicker = "";
-
         if (state.userSelectedNYSE) {
             findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedTicker);
             fetchAlphaVantageData(findStockNameByTicker.ticker);
@@ -112,7 +101,6 @@ const SearchIndividualStocksComponent = (props) => {
                 allTickersFromNYSEArray: fetchAllTickersFromNYSEJson.map((t) => t.ticker),
                 allTickersFromNASDAQArray: fetchAllTickersFromNASDAQJson.map((t) => t.ticker),
             });
-
         } catch (error) {
             console.log(`error loading JSON data sets: ${error}`);
             sendMessageToSnackbar("Error loading JSON data sets");
@@ -208,6 +196,7 @@ const SearchIndividualStocksComponent = (props) => {
                             )}
                         />
                     }
+                    
                     <Typography variant="h6" color="green" style={{ textAlign: 'center' }}>
                         {state.grabSelectedTickersName}
                     </Typography>
@@ -215,19 +204,15 @@ const SearchIndividualStocksComponent = (props) => {
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Grid container justifyContent="space-around">
                             <KeyboardDatePicker
-                                // disableToolbar
-                                // variant=dialog or inline
-                                variant="dialog"
-                                format="yyy-MM-dd"
+                                format="yyyy-MM-dd"
                                 margin="normal"
-                                id="date-picker"
                                 label="Pick Date"
-                                value={state.grabSelectedDate}
+                                value={selectedDate}
+                                inputValue={dateInputValue}
                                 onChange={handleDateChange}
                             />
                         </Grid>
                     </MuiPickersUtilsProvider>
-
                 </CardContent>
             </Card>
         </ThemeProvider>

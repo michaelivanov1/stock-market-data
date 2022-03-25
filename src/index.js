@@ -5,10 +5,10 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 render(
   // when app is done, remove strict mode to surpress all warnings
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <App />
-    </Router>
-  </React.StrictMode>,
+    </Router>,
+  // </React.StrictMode>,
   document.querySelector("#root")
 );
