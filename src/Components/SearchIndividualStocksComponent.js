@@ -48,6 +48,8 @@ const SearchIndividualStocksComponent = (props) => {
         userSelectedNASDAQ: false,
         // holds corresponding stock name based on ticker entered
         grabSelectedTickersName: "",
+        // holds ticker that user selected
+        grabSelectedTicker: "",
     };
     const reducer = (state, newState) => ({ ...state, ...newState });
     const [state, setState] = useReducer(reducer, initialState);
@@ -59,24 +61,44 @@ const SearchIndividualStocksComponent = (props) => {
     // hooks to hold formatted date based on user input
     const [selectedDate, setDate] = useState(moment());
     const [dateInputValue, setDateInputValue] = useState(moment().format("YYYY-MM-DD"));
-    // set the date based on user input
+
+    // handle changes in the date selector
     const handleDateChange = (date, value) => {
+        // set raw date value
         setDate(date);
+        // set formatted date value
         setDateInputValue(value);
-        console.log(`date entered: ${value}`);
+        // call alphavantage api function anytime the user changes the date
+        fetchAlphaVantageData(state.grabSelectedTicker, value);
     }
 
-    // grab stocks name based on selected ticker
+
+    // handle changes in the autocomplete
     const autocompleteOnChange = (e, selectedTicker) => {
         let findStockNameByTicker = "";
         if (state.userSelectedNYSE) {
-            findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedTicker);
-            fetchAlphaVantageData(findStockNameByTicker.ticker);
+            try {
+                findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedTicker);
+                // call alphavantage api function anytime the user changes the ticker
+                fetchAlphaVantageData(findStockNameByTicker.ticker, dateInputValue);
+            } catch (e) {
+                console.log(`error using autocomplete. autocomplete value is null: ${e}`);
+            }
         } else if (state.userSelectedNASDAQ) {
-            findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker === selectedTicker);
-            fetchAlphaVantageData(findStockNameByTicker.ticker);
+            try {
+                findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker === selectedTicker);
+                // call alphavantage api function anytime the user changes the ticker
+                fetchAlphaVantageData(findStockNameByTicker.ticker, dateInputValue);
+            } catch (e) {
+                console.log(`error using autocomplete. autocomplete value is null: ${e}`);
+            }
         }
-        if (selectedTicker) setState({ grabSelectedTickersName: findStockNameByTicker.name })
+        if (selectedTicker) {
+            // set stocks name based on user selection
+            setState({ grabSelectedTickersName: findStockNameByTicker.name })
+            // set stocks ticker based on user selection
+            setState({ grabSelectedTicker: findStockNameByTicker.ticker })
+        }
     };
 
     // grab the JSON data sets and load them. called in useEffect
@@ -108,15 +130,15 @@ const SearchIndividualStocksComponent = (props) => {
     };
 
     // call alphavantage API and parse url based on user input
-    const fetchAlphaVantageData = async (ticker) => {
+    const fetchAlphaVantageData = async (ticker, date) => {
         try {
+            // NOTE: can only make 5 api calls per minute, or 500 api calls per day
             let alphavantageUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
 
             let alphavantageUrlResponse = await fetch(alphavantageUrl);
             let alphavantageUrlJson = await alphavantageUrlResponse.json();
 
-            // TODO: add ability for user to enter any date in
-            console.log(`data retrieved: ${JSON.stringify(alphavantageUrlJson["Time Series (Daily)"]['2022-03-24'])}`);
+            console.log(`data from alphavantage: ${JSON.stringify(alphavantageUrlJson["Time Series (Daily)"][date])}`);
             sendMessageToSnackbar(`Found data for ${ticker}`);
         } catch (error) {
             sendMessageToSnackbar(`Null data for ticker ${ticker}`);
@@ -139,7 +161,7 @@ const SearchIndividualStocksComponent = (props) => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Card style={{ marginTop: "10vh", marginLeft: '20%', width: "60%", border: '1px solid black' }}>
+            <Card style={{ marginLeft: '25%', marginTop: '5%', width: "50%", border: '1px solid black' }}>
                 <RadioGroup
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"
@@ -202,7 +224,7 @@ const SearchIndividualStocksComponent = (props) => {
                 </CardContent>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justifyContent="space-around">
-                        {/* ERROR HERE: the search buttons on the left move when code is uncommented */}
+                        {/* TODO: the search buttons on the left move when KeyboardDatePicker is uncommented */}
                         <KeyboardDatePicker
                             format="yyyy-MM-dd"
                             margin="normal"
@@ -211,10 +233,11 @@ const SearchIndividualStocksComponent = (props) => {
                             inputValue={dateInputValue}
                             onChange={handleDateChange}
                             disableFuture
+                            InputProps={{ readOnly: true }}
                         />
                     </Grid>
                 </MuiPickersUtilsProvider>
-            </Card>                 
+            </Card>
         </ThemeProvider>
     );
 };

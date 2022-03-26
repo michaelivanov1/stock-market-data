@@ -112,6 +112,7 @@ const styles = {
   boxStyles: {
     maxWidth: '20%',
     position: 'absolute',
+    //border: '1px solid black',
 
     "@media (max-width: 850px)": {
       maxWidth: '100%',
