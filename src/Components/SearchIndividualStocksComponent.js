@@ -10,6 +10,7 @@ import {
     Typography,
     Autocomplete,
     TextField,
+    Button
 } from "@mui/material";
 import theme from "../theme";
 // imports for date picker
@@ -50,6 +51,9 @@ const SearchIndividualStocksComponent = (props) => {
         grabSelectedTickersName: "",
         // holds ticker that user selected
         grabSelectedTicker: "",
+        // holds formatted and unformatted dates
+        unformattedDate: moment(),
+        formattedDate: moment().format("YYYY-MM-DD"),
     };
     const reducer = (state, newState) => ({ ...state, ...newState });
     const [state, setState] = useReducer(reducer, initialState);
@@ -58,20 +62,13 @@ const SearchIndividualStocksComponent = (props) => {
         fetchJsonDataSets();
     }, []);
 
-    // hooks to hold formatted date based on user input
-    const [selectedDate, setDate] = useState(moment());
-    const [dateInputValue, setDateInputValue] = useState(moment().format("YYYY-MM-DD"));
-
     // handle changes in the date selector
-    const handleDateChange = (date, value) => {
+    const handleDateChange = (unformattedDate, formattedDate) => {
         // set raw date value
-        setDate(date);
+        setState({ unformattedDate: unformattedDate });
         // set formatted date value
-        setDateInputValue(value);
-        // call alphavantage api function anytime the user changes the date
-        fetchAlphaVantageData(state.grabSelectedTicker, value);
+        setState({ formattedDate: formattedDate });
     }
-
 
     // handle changes in the autocomplete
     const autocompleteOnChange = (e, selectedTicker) => {
@@ -79,16 +76,12 @@ const SearchIndividualStocksComponent = (props) => {
         if (state.userSelectedNYSE) {
             try {
                 findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedTicker);
-                // call alphavantage api function anytime the user changes the ticker
-                fetchAlphaVantageData(findStockNameByTicker.ticker, dateInputValue);
             } catch (e) {
                 console.log(`error using autocomplete. autocomplete value is null: ${e}`);
             }
         } else if (state.userSelectedNASDAQ) {
             try {
                 findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker === selectedTicker);
-                // call alphavantage api function anytime the user changes the ticker
-                fetchAlphaVantageData(findStockNameByTicker.ticker, dateInputValue);
             } catch (e) {
                 console.log(`error using autocomplete. autocomplete value is null: ${e}`);
             }
@@ -133,7 +126,7 @@ const SearchIndividualStocksComponent = (props) => {
     const fetchAlphaVantageData = async (ticker, date) => {
         try {
             // NOTE: can only make 5 api calls per minute, or 500 api calls per day
-            let alphavantageUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
+            let alphavantageUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&outputsize=full&symbol=${ticker}&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
 
             let alphavantageUrlResponse = await fetch(alphavantageUrl);
             let alphavantageUrlJson = await alphavantageUrlResponse.json();
@@ -141,7 +134,7 @@ const SearchIndividualStocksComponent = (props) => {
             console.log(`data from alphavantage: ${JSON.stringify(alphavantageUrlJson["Time Series (Daily)"][date])}`);
             sendMessageToSnackbar(`Found data for ${ticker}`);
         } catch (error) {
-            sendMessageToSnackbar(`Null data for ticker ${ticker}`);
+            sendMessageToSnackbar(`No data for ticker ${ticker}`);
         }
     }
 
@@ -158,6 +151,22 @@ const SearchIndividualStocksComponent = (props) => {
             sendMessageToSnackbar(`Found ${state.allTickersFromNASDAQArray.length} tickers in NASDAQ`);
         }
     }
+
+    // disable weekends
+    function disableWeekends(date) {
+        return date.getDay() === 0 || date.getDay() === 6;
+    }
+
+    // fetch the data from alphavantage api onclick
+    const onViewDataButtonClick = () => {
+        console.log(`button click ticker state: ${state.grabSelectedTicker}`);
+        console.log(`button click date state: ${state.formattedDate}`);
+        fetchAlphaVantageData(state.grabSelectedTicker, state.formattedDate);
+    }
+    // keep button disabled until user inputs some data
+    const emptyorundefined =
+        state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined ||
+        state.formattedDate === "" || state.formattedDate === undefined;
 
     return (
         <ThemeProvider theme={theme}>
@@ -224,19 +233,34 @@ const SearchIndividualStocksComponent = (props) => {
                 </CardContent>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justifyContent="space-around">
-                        {/* TODO: the search buttons on the left move when KeyboardDatePicker is uncommented */}
+                        {/* TODO: the search buttons on the left move when KeyboardDatePicker is uncommented 
+                            TODO: play around with DatePicker */}
                         <KeyboardDatePicker
                             format="yyyy-MM-dd"
                             margin="normal"
                             label="Pick Date"
-                            value={selectedDate}
-                            inputValue={dateInputValue}
+                            value={state.unformattedDate}
+                            inputValue={state.formattedDate}
                             onChange={handleDateChange}
                             disableFuture
                             InputProps={{ readOnly: true }}
+                            shouldDisableDate={disableWeekends}
                         />
                     </Grid>
                 </MuiPickersUtilsProvider>
+
+                <Button
+                    style={{
+                        borderRadius: 10,
+                        backgroundColor: "#21b6ae",
+                        padding: "18px 36px",
+                        fontSize: "18px",
+                        marginTop: 20,
+                    }}
+                    disabled={emptyorundefined}
+                    variant="contained"
+                    onClick={onViewDataButtonClick}
+                >View Data</Button>
             </Card>
         </ThemeProvider>
     );
