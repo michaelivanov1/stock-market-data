@@ -51,7 +51,7 @@ const App = () => {
       <AppBar style={{ position: 'sticky', background: 'white', width: '100%', boxShadow: 'none', borderBottom: '1px solid black', marginBottom: 30 }}>
         <Toolbar>
           <Typography variant="h4" color="black" align="center" width="100%">
-            Fetch Stock Market Data
+            Stock Market Data Visualizer
           </Typography>
         </Toolbar>
       </AppBar>

@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React, { useReducer, useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -13,6 +13,12 @@ import {
     Button,
     Box
 } from "@mui/material";
+import Table from "@material-ui/core/Table";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableBody from "@material-ui/core/TableBody";
 import theme from "../theme";
 // imports for date picker
 import 'date-fns';
@@ -51,13 +57,20 @@ const SearchIndividualStocksComponent = (props) => {
         // bools to determine which components to display based on if user is selecting the filters
         userFilteredByExchange: false,
         userFilteredByDate: false,
+        userSelectedATicker: false,
         // holds corresponding stock name based on ticker entered
         grabSelectedTickersName: "",
-        // holds ticker that user selected
+        // hold ticker that user selected
         grabSelectedTicker: "",
-        // holds formatted and unformatted dates
+        // hold formatted and unformatted dates
         unformattedDate: moment(),
         formattedDate: moment().format("YYYY-MM-DD"),
+        // data from alphavantage object: open, high, low, close, volume
+        openPrice: [],
+        highPrice: [],
+        lowPrice: [],
+        closePrice: [],
+        volume: [],
     };
     const reducer = (state, newState) => ({ ...state, ...newState });
     const [state, setState] = useReducer(reducer, initialState);
@@ -83,12 +96,14 @@ const SearchIndividualStocksComponent = (props) => {
         if (state.userSelectedNYSE) {
             try {
                 findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedTicker);
+                setState({userSelectedATicker: true});
             } catch (e) {
                 console.log(`error using autocomplete. autocomplete value is null: ${e}`);
             }
         } else if (state.userSelectedNASDAQ) {
             try {
                 findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker === selectedTicker);
+                setState({userSelectedATicker: true});
             } catch (e) {
                 console.log(`error using autocomplete. autocomplete value is null: ${e}`);
             }
@@ -139,6 +154,12 @@ const SearchIndividualStocksComponent = (props) => {
             let alphavantageUrlJson = await alphavantageUrlResponse.json();
 
             console.log(`data from alphavantage: ${JSON.stringify(alphavantageUrlJson["Time Series (Daily)"][date])}`);
+            // set data for each property in fetched alphavantage object
+            setState({ openPrice: alphavantageUrlJson["Time Series (Daily)"][date]['1. open'] });
+            setState({ highPrice: alphavantageUrlJson["Time Series (Daily)"][date]['2. high'] });
+            setState({ lowPrice: alphavantageUrlJson["Time Series (Daily)"][date]['3. low'] });
+            setState({ closePrice: alphavantageUrlJson["Time Series (Daily)"][date]['4. close'] });
+            setState({ volume: alphavantageUrlJson["Time Series (Daily)"][date]['5. volume'] });
             sendMessageToSnackbar(`Found data for ${ticker}`);
         } catch (error) {
             sendMessageToSnackbar(`No data for ticker ${ticker}`);
@@ -172,6 +193,7 @@ const SearchIndividualStocksComponent = (props) => {
         console.log(`button click date state: ${state.formattedDate}`);
         fetchAlphaVantageData(state.grabSelectedTicker, state.formattedDate);
     }
+
     // keep button disabled until user inputs some data
     const emptyorundefined =
         state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined ||
@@ -261,9 +283,6 @@ const SearchIndividualStocksComponent = (props) => {
                                 )}
                             />
                         }
-                        <Typography variant="h6" color="green" style={{ textAlign: 'center' }}>
-                            {state.grabSelectedTickersName}
-                        </Typography>
                     </CardContent>
 
                     {state.userFilteredByExchange && state.userFilteredByDate &&
@@ -278,11 +297,37 @@ const SearchIndividualStocksComponent = (props) => {
                             disabled={emptyorundefined}
                             variant="contained"
                             onClick={onViewDataButtonClick}
-                        >View Data</Button>
+                        >DISPLAY DATA</Button>
                     }
                 </Card>
+                {state.userFilteredByExchange && state.userFilteredByDate && state.userSelectedATicker && 
+                    <TableContainer
+                        className="tableStyles">
+                        <Table stickyHeader>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center" style={{ fontSize: 14, borderBottom: '1px solid black', backgroundColor: 'lightgray' }}>Name</TableCell>
+                                    <TableCell align="center" style={{ fontSize: 14, borderBottom: '1px solid black', backgroundColor: 'lightgray' }}>Open price</TableCell>
+                                    <TableCell align="center" style={{ fontSize: 14, borderBottom: '1px solid black', backgroundColor: 'lightgray' }}>High</TableCell>
+                                    <TableCell align="center" style={{ fontSize: 14, borderBottom: '1px solid black', backgroundColor: 'lightgray' }}>Low</TableCell>
+                                    <TableCell align="center" style={{ fontSize: 14, borderBottom: '1px solid black', backgroundColor: 'lightgray' }}>Close price</TableCell>
+                                    <TableCell align="center" style={{ fontSize: 14, borderBottom: '1px solid black', backgroundColor: 'lightgray' }}>Volume</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody style={{ marginTop: 50, borderTop: '2px solid green' }}>
+                                <TableRow>
+                                    <TableCell align={'center'} style={{ backgroundColor: 'silver' }}>{state.grabSelectedTickersName}</TableCell>
+                                    <TableCell align={'center'} style={{ backgroundColor: 'silver' }}>{state.openPrice}</TableCell>
+                                    <TableCell align={'center'} style={{ backgroundColor: 'silver' }}>{state.highPrice}</TableCell>
+                                    <TableCell align={'center'} style={{ backgroundColor: 'silver' }}>{state.lowPrice}</TableCell>
+                                    <TableCell align={'center'} style={{ backgroundColor: 'silver' }}>{state.closePrice}</TableCell>
+                                    <TableCell align={'center'} style={{ backgroundColor: 'silver' }}>{state.volume}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                }
             </Box>
-
         </ThemeProvider>
     );
 };

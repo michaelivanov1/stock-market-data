@@ -4,27 +4,43 @@ body, html {
   width: 100%;
 }
 
+.tableStyles {
+  max-height: 300px;
+  margin-top: 20px;
+}
+
 /* smaller phone viewpoints */
 @media only screen and (min-width: 1px) and (max-width: 479px) {
-
+  .tableStyles {
+    max-height: 380px;
+  }
 }
 
 /* small devices and most phones */
 @media only screen and (min-width: 480px) {
-
+  .tableStyles {
+    max-height: 340px;
+  }
 }
 
 /* most tablets */
 @media only screen and (min-width: 768px) {
-
+  .tableStyles {
+    max-height: 310px;
+  }
 }
 
 /* smaller desktop viewpoints */
 @media only screen and (min-width: 992px) {
-
+  .tableStyles {
+    max-height: 280px;
+  }
 }
 
 /* large devices and wide screens */
 @media only screen and (min-width: 1200px) {
-
+  .tableStyles {
+    max-width: 70%;
+    margin: 20px auto 0 auto;
+  }
 }
