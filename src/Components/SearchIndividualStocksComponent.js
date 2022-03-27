@@ -10,7 +10,8 @@ import {
     Typography,
     Autocomplete,
     TextField,
-    Button
+    Button,
+    Box
 } from "@mui/material";
 import theme from "../theme";
 // imports for date picker
@@ -47,6 +48,9 @@ const SearchIndividualStocksComponent = (props) => {
         // bools to determine which data to display
         userSelectedNYSE: false,
         userSelectedNASDAQ: false,
+        // bools to determine which components to display based on if user is selecting the filters
+        userFilteredByExchange: false,
+        userFilteredByDate: false,
         // holds corresponding stock name based on ticker entered
         grabSelectedTickersName: "",
         // holds ticker that user selected
@@ -68,6 +72,9 @@ const SearchIndividualStocksComponent = (props) => {
         setState({ unformattedDate: unformattedDate });
         // set formatted date value
         setState({ formattedDate: formattedDate });
+        setState({ userFilteredByDate: true })
+        console.log(`handleDateChange unformatted date: ${unformattedDate}`);
+        console.log(`handleDateChange formatted date: ${formattedDate}`);
     }
 
     // handle changes in the autocomplete
@@ -143,11 +150,13 @@ const SearchIndividualStocksComponent = (props) => {
         if (event.target.value === "nyse") {
             setState(state.userSelectedNYSE = true);
             setState(state.userSelectedNASDAQ = false);
+            setState({ userFilteredByExchange: true });
             sendMessageToSnackbar(`Found ${state.allTickersFromNYSEArray.length} tickers in NYSE`)
         }
         if (event.target.value === "nasdaq") {
-            setState(state.userSelectedNASDAQ = true);
-            setState(state.userSelectedNYSE = false);
+            setState({ userSelectedNASDAQ: true });
+            setState({ userSelectedNYSE: false });
+            setState({ userFilteredByExchange: true });
             sendMessageToSnackbar(`Found ${state.allTickersFromNASDAQArray.length} tickers in NASDAQ`);
         }
     }
@@ -168,100 +177,112 @@ const SearchIndividualStocksComponent = (props) => {
         state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined ||
         state.formattedDate === "" || state.formattedDate === undefined;
 
+
     return (
         <ThemeProvider theme={theme}>
-            <Card style={{ marginLeft: '25%', marginTop: '5%', width: "50%", border: '1px solid black' }}>
-                <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                    onChange={handleRadioButtonChange}
-                    style={{ justifyContent: 'center' }}
-                >
-                    <FormControlLabel value="nyse" control={<Radio />} label="NYSE" />
-                    <FormControlLabel value="nasdaq" control={<Radio />} label="NASDAQ" />
-                </RadioGroup>
+            <Box textAlign='center'>
+                <Card style={{ marginLeft: '25%', width: "50%", boxShadow: 'none' }}>
+                    <CardHeader
+                        title="Filter by stock exchange:"
+                        style={{ color: 'black', textAlign: "center" }}
+                    />
 
-                <CardHeader
-                    title="Search by ticker"
-                    style={{ color: theme.palette.primary.main, textAlign: "center" }}
-                />
-                <CardContent>
-                    <div>
-                        <Typography color="error" style={{ textAlign: 'center' }}>{state.msg}</Typography>
-                    </div>
-                </CardContent>
+                    <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        onChange={handleRadioButtonChange}
+                        style={{ justifyContent: 'center' }}
+                    >
+                        <FormControlLabel value="nyse" control={<Radio />} label="NYSE" labelPlacement="top" />
+                        <FormControlLabel value="nasdaq" control={<Radio />} label="NASDAQ" labelPlacement="top" />
+                    </RadioGroup>
 
-                <CardContent>
-                    {state.userSelectedNYSE &&
-                        <Autocomplete
-                            data-testid="autocomplete"
-                            options={state.allTickersFromNYSEArray}
-                            getOptionLabel={(option) => option}
-                            style={{ width: 300, margin: 'auto', color: theme.palette.primary.main }}
-                            onChange={autocompleteOnChange}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="search by nyse ticker"
-                                    variant="outlined"
-                                    fullWidth
+                    <CardContent>
+                        <div>
+                            <Typography color="error" style={{ textAlign: 'center' }}>{state.msg}</Typography>
+                        </div>
+                    </CardContent>
+
+                    {state.userFilteredByExchange &&
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <CardHeader
+                                title="Filter by date:"
+                                style={{ color: 'black', textAlign: "center" }}
+                            />
+                            <Grid>
+                                <KeyboardDatePicker
+                                    format="yyyy-MM-dd"
+                                    margin="normal"
+                                    label="Pick Date"
+                                    value={state.unformattedDate}
+                                    inputValue={state.formattedDate}
+                                    onChange={handleDateChange}
+                                    disableFuture
+                                    InputProps={{ readOnly: true }}
+                                    shouldDisableDate={disableWeekends}
                                 />
-                            )}
-                        />
+                            </Grid>
+                        </MuiPickersUtilsProvider>
                     }
-                    {state.userSelectedNASDAQ &&
-                        <Autocomplete
-                            data-testid="autocomplete"
-                            options={state.allTickersFromNASDAQArray}
-                            getOptionLabel={(option) => option}
-                            style={{ width: 300, margin: 'auto', color: theme.palette.primary.main }}
-                            onChange={autocompleteOnChange}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="search by nasdaq ticker"
-                                    variant="outlined"
-                                    fullWidth
-                                />
-                            )}
-                        />
-                    }
-                    <Typography variant="h6" color="green" style={{ textAlign: 'center' }}>
-                        {state.grabSelectedTickersName}
-                    </Typography>
-                </CardContent>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container justifyContent="space-around">
-                        {/* TODO: the search buttons on the left move when KeyboardDatePicker is uncommented 
-                            TODO: play around with DatePicker */}
-                        <KeyboardDatePicker
-                            format="yyyy-MM-dd"
-                            margin="normal"
-                            label="Pick Date"
-                            value={state.unformattedDate}
-                            inputValue={state.formattedDate}
-                            onChange={handleDateChange}
-                            disableFuture
-                            InputProps={{ readOnly: true }}
-                            shouldDisableDate={disableWeekends}
-                        />
-                    </Grid>
-                </MuiPickersUtilsProvider>
 
-                <Button
-                    style={{
-                        borderRadius: 10,
-                        backgroundColor: "#21b6ae",
-                        padding: "18px 36px",
-                        fontSize: "18px",
-                        marginTop: 20,
-                    }}
-                    disabled={emptyorundefined}
-                    variant="contained"
-                    onClick={onViewDataButtonClick}
-                >View Data</Button>
-            </Card>
+                    <CardContent>
+                        {state.userSelectedNYSE && state.userFilteredByDate &&
+                            <Autocomplete
+                                data-testid="autocomplete"
+                                options={state.allTickersFromNYSEArray}
+                                getOptionLabel={(option) => option}
+                                style={{ width: 300, margin: 'auto', color: theme.palette.primary.main }}
+                                onChange={autocompleteOnChange}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="search by nyse ticker"
+                                        variant="outlined"
+                                        fullWidth
+                                    />
+                                )}
+                            />
+                        }
+                        {state.userSelectedNASDAQ && state.userFilteredByDate &&
+                            <Autocomplete
+                                data-testid="autocomplete"
+                                options={state.allTickersFromNASDAQArray}
+                                getOptionLabel={(option) => option}
+                                style={{ width: 300, margin: 'auto', color: theme.palette.primary.main }}
+                                onChange={autocompleteOnChange}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="search by nasdaq ticker"
+                                        variant="outlined"
+                                        fullWidth
+                                    />
+                                )}
+                            />
+                        }
+                        <Typography variant="h6" color="green" style={{ textAlign: 'center' }}>
+                            {state.grabSelectedTickersName}
+                        </Typography>
+                    </CardContent>
+
+                    {state.userFilteredByExchange && state.userFilteredByDate &&
+                        <Button
+                            style={{
+                                borderRadius: 10,
+                                backgroundColor: "lightgray",
+                                padding: "10px 20px",
+                                fontSize: "18px",
+                                marginTop: 20,
+                            }}
+                            disabled={emptyorundefined}
+                            variant="contained"
+                            onClick={onViewDataButtonClick}
+                        >View Data</Button>
+                    }
+                </Card>
+            </Box>
+
         </ThemeProvider>
     );
 };
