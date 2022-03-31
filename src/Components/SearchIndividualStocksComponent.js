@@ -201,6 +201,7 @@ const SearchIndividualStocksComponent = (props) => {
         state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined ||
         state.formattedDate === "" || state.formattedDate === undefined;
 
+        
 
     return (
         <ThemeProvider theme={theme}>
