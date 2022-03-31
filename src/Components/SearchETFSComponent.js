@@ -1,8 +1,5 @@
 import React, { useReducer, useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import {
     Card,
     CardHeader,
@@ -33,11 +30,10 @@ import { dataSetHelper } from "../Helpers/helpers";
 // for formatting date
 import moment from "moment";
 
-// grab JSON url's from helper file
-const fetchAllTickersFromNYSEURL = dataSetHelper.NYSETickers;
-const fetchAllTickersFromNASDAQURL = dataSetHelper.NASDAQTickers;
+// grab JSON url from helper file
+const fetchAllEtfsFromFile = dataSetHelper.AmericanETFs;
 
-const SearchIndividualStocksComponent = (props) => {
+const SearchETFSComponent = (props) => {
 
     // send snackbar messages to App.js
     const sendMessageToSnackbar = (msg) => {
@@ -45,24 +41,18 @@ const SearchIndividualStocksComponent = (props) => {
     }
 
     const initialState = {
-        // hold all json data fetched from json data sets in "data-sets" folder in my github repo
-        allDataFromNYSEArray: [],
-        allDataFromNASDAQArray: [],
-        // hold just all the ticker values fetched from the json data sets
-        allTickersFromNYSEArray: [],
-        allTickersFromNASDAQArray: [],
-        // bools to determine which data to display
-        userSelectedNYSE: false,
-        userSelectedNASDAQ: false,
-        // bools to determine which components to display based on if user is selecting the filters
-        userFilteredByExchange: false,
-        userFilteredByDate: false,
-        userSelectedATicker: false,
-        userClickedDisplayData: false,
-        // holds corresponding stock name based on ticker entered
+        // holds all data from json file
+        allDataFromEtfFileArray: [],
+        // holds all tickers from json file
+        allTickersFromEtfFileArray: [],
+        // holds corresponding etf name based on ticker entered
         grabSelectedTickersName: "",
         // hold ticker that user selected
         grabSelectedTicker: "",
+        // bools to determine which components to display based on if user is selecting the filters
+        userSelectedATicker: false,
+        userFilteredByDate: false,
+        userClickedDisplayData: false,
         // hold formatted and unformatted dates
         unformattedDate: moment(),
         formattedDate: moment().format("YYYY-MM-DD"),
@@ -77,7 +67,7 @@ const SearchIndividualStocksComponent = (props) => {
     const [state, setState] = useReducer(reducer, initialState);
 
     useEffect(() => {
-        fetchJsonDataSets();
+        fetchJsonDataSet();
     }, []);
 
     // handle changes in the date selector
@@ -93,51 +83,38 @@ const SearchIndividualStocksComponent = (props) => {
 
     // handle changes in the autocomplete
     const autocompleteOnChange = (e, selectedTicker) => {
-        let findStockNameByTicker = "";
-        if (state.userSelectedNYSE) {
-            try {
-                findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedTicker);
-                setState({ userSelectedATicker: true });
-            } catch (e) {
-                console.log(`error using autocomplete. autocomplete value is null: ${e}`);
-            }
-        } else if (state.userSelectedNASDAQ) {
-            try {
-                findStockNameByTicker = state.allDataFromNASDAQArray.find(n => n.ticker === selectedTicker);
-                setState({ userSelectedATicker: true });
-            } catch (e) {
-                console.log(`error using autocomplete. autocomplete value is null: ${e}`);
-            }
+        let findETFNameByTicker = "";
+
+        try {
+            findETFNameByTicker = state.allDataFromEtfFileArray.find(n => n.Symbol === selectedTicker);
+            setState({ userSelectedATicker: true });
+        } catch (e) {
+            console.log(`error using autocomplete. autocomplete value is null: ${e}`);
         }
         if (selectedTicker) {
-            // set stocks name based on user selection
-            setState({ grabSelectedTickersName: findStockNameByTicker.name })
-            // set stocks ticker based on user selection
-            setState({ grabSelectedTicker: findStockNameByTicker.ticker })
+            // set ETFs name based on user selection
+            setState({ grabSelectedTickersName: findETFNameByTicker.Name });
+            // set ETFs ticker based on user selection
+            setState({ grabSelectedTicker: findETFNameByTicker.Symbol });
         }
     };
 
-    // grab the JSON data sets and load them. called in useEffect
-    const fetchJsonDataSets = async () => {
+    // grab the JSON data set and load it. called in useEffect
+    const fetchJsonDataSet = async () => {
         try {
             setState({
                 contactServer: true,
             });
             sendMessageToSnackbar("Attempting to load data from server...");
 
-            let fetchAllTickersFromNYSEResponse = await fetch(fetchAllTickersFromNYSEURL);
-            let fetchAllTickersFromNYSEJson = await fetchAllTickersFromNYSEResponse.json();
-
-            let fetAllTickersFromNASDAQResponse = await fetch(fetchAllTickersFromNASDAQURL);
-            let fetchAllTickersFromNASDAQJson = await fetAllTickersFromNASDAQResponse.json();
+            let fetchAllEtfsFromFileResponse = await fetch(fetchAllEtfsFromFile);
+            let fetchAllEtfsFromFileJson = await fetchAllEtfsFromFileResponse.json();
 
             sendMessageToSnackbar("All tickers loaded");
 
             setState({
-                allDataFromNYSEArray: fetchAllTickersFromNYSEJson,
-                allDataFromNASDAQArray: fetchAllTickersFromNASDAQJson,
-                allTickersFromNYSEArray: fetchAllTickersFromNYSEJson.map((t) => t.ticker),
-                allTickersFromNASDAQArray: fetchAllTickersFromNASDAQJson.map((t) => t.ticker),
+                allDataFromEtfFileArray: fetchAllEtfsFromFileJson,
+                allTickersFromEtfFileArray: fetchAllEtfsFromFileJson.map((s) => s.Symbol),
             });
         } catch (error) {
             console.log(`error loading JSON data sets: ${error}`);
@@ -167,22 +144,6 @@ const SearchIndividualStocksComponent = (props) => {
         }
     }
 
-    // set states for each radio button
-    const handleRadioButtonChange = (event) => {
-        if (event.target.value === "nyse") {
-            setState(state.userSelectedNYSE = true);
-            setState(state.userSelectedNASDAQ = false);
-            setState({ userFilteredByExchange: true });
-            sendMessageToSnackbar(`Found ${state.allTickersFromNYSEArray.length} tickers in NYSE`)
-        }
-        if (event.target.value === "nasdaq") {
-            setState({ userSelectedNASDAQ: true });
-            setState({ userSelectedNYSE: false });
-            setState({ userFilteredByExchange: true });
-            sendMessageToSnackbar(`Found ${state.allTickersFromNASDAQArray.length} tickers in NASDAQ`);
-        }
-    }
-
     // disable weekends
     function disableWeekends(date) {
         return date.getDay() === 0 || date.getDay() === 6;
@@ -198,8 +159,7 @@ const SearchIndividualStocksComponent = (props) => {
 
     // keep button disabled until user inputs some data
     const emptyorundefined =
-        state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined ||
-        state.formattedDate === "" || state.formattedDate === undefined;
+        state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined;
 
 
     return (
@@ -207,20 +167,9 @@ const SearchIndividualStocksComponent = (props) => {
             <Box textAlign='center'>
                 <Card style={{ marginLeft: '25%', width: "50%", boxShadow: 'none' }}>
                     <CardHeader
-                        title="Filter by stock exchange:"
+                        title="Search an ETF:"
                         style={{ color: 'black', textAlign: "center" }}
                     />
-
-                    <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="row-radio-buttons-group"
-                        onChange={handleRadioButtonChange}
-                        style={{ justifyContent: 'center' }}
-                    >
-                        <FormControlLabel value="nyse" control={<Radio />} label="NYSE" labelPlacement="top" />
-                        <FormControlLabel value="nasdaq" control={<Radio />} label="NASDAQ" labelPlacement="top" />
-                    </RadioGroup>
 
                     <CardContent>
                         <div>
@@ -228,7 +177,25 @@ const SearchIndividualStocksComponent = (props) => {
                         </div>
                     </CardContent>
 
-                    {state.userFilteredByExchange &&
+                    <CardContent>
+                        <Autocomplete
+                            data-testid="autocomplete"
+                            options={state.allTickersFromEtfFileArray}
+                            getOptionLabel={(option) => option}
+                            style={{ width: 300, margin: 'auto', color: theme.palette.primary.main }}
+                            onChange={autocompleteOnChange}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="search american etfs"
+                                    variant="outlined"
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </CardContent>
+
+                    {state.userSelectedATicker &&
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <CardHeader
                                 title="Filter by date:"
@@ -250,44 +217,7 @@ const SearchIndividualStocksComponent = (props) => {
                         </MuiPickersUtilsProvider>
                     }
 
-                    <CardContent>
-                        {state.userSelectedNYSE && state.userFilteredByDate &&
-                            <Autocomplete
-                                data-testid="autocomplete"
-                                options={state.allTickersFromNYSEArray}
-                                getOptionLabel={(option) => option}
-                                style={{ width: 300, margin: 'auto', color: theme.palette.primary.main }}
-                                onChange={autocompleteOnChange}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="search by nyse ticker"
-                                        variant="outlined"
-                                        fullWidth
-                                    />
-                                )}
-                            />
-                        }
-                        {state.userSelectedNASDAQ && state.userFilteredByDate &&
-                            <Autocomplete
-                                data-testid="autocomplete"
-                                options={state.allTickersFromNASDAQArray}
-                                getOptionLabel={(option) => option}
-                                style={{ width: 300, margin: 'auto', color: theme.palette.primary.main }}
-                                onChange={autocompleteOnChange}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label="search by nasdaq ticker"
-                                        variant="outlined"
-                                        fullWidth
-                                    />
-                                )}
-                            />
-                        }
-                    </CardContent>
-
-                    {state.userFilteredByExchange && state.userFilteredByDate &&
+                    {state.userFilteredByDate &&
                         <Button
                             style={{
                                 borderRadius: 10,
@@ -301,8 +231,10 @@ const SearchIndividualStocksComponent = (props) => {
                             onClick={onViewDataButtonClick}
                         >DISPLAY DATA</Button>
                     }
+
+
                 </Card>
-                {state.userFilteredByExchange && state.userFilteredByDate && state.userSelectedATicker && state.userClickedDisplayData &&
+                {state.userFilteredByDate && state.userSelectedATicker && state.userClickedDisplayData &&
                     <TableContainer
                         className="tableStyles">
                         <Table stickyHeader>
@@ -334,4 +266,4 @@ const SearchIndividualStocksComponent = (props) => {
     );
 };
 
-export default SearchIndividualStocksComponent;
+export default SearchETFSComponent;

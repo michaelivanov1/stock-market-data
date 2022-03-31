@@ -2,6 +2,7 @@
 const dataSetHelper = {
     NYSETickers: `https://raw.githubusercontent.com/michaelivanov1/stock-market-data/master/data-sets/all-nyse-tickers-2022.json`,
     NASDAQTickers: `https://raw.githubusercontent.com/michaelivanov1/stock-market-data/master/data-sets/all-nasdaq-tickers-2022.json`,
+    AmericanETFs: `https://raw.githubusercontent.com/michaelivanov1/stock-market-data-visualizer/master/data-sets/top-500-american-etfs-by-marketcap.json`,
 }
 
 export { dataSetHelper };

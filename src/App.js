@@ -4,6 +4,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import HomeComponent from "./Components/HomeComponent";
 import SearchIndividualStocksComponent from "./Components/SearchIndividualStocksComponent";
+import SearchETFSComponent from "./Components/SearchETFSComponent";
 import {
   Toolbar,
   AppBar,
@@ -71,7 +72,7 @@ const App = () => {
           <Divider />
           <ListSubheader>Search Methods</ListSubheader>
           <ListItem>
-            <ListItemButton component={Link} to="/main">
+            <ListItemButton component={Link} to="/searchstocks">
               <ListItemIcon>
                 <SearchIcon />
               </ListItemIcon>
@@ -80,7 +81,7 @@ const App = () => {
           </ListItem>
           <Divider />
           <ListItem>
-            <ListItemButton component={Link} to="/main">
+            <ListItemButton component={Link} to="/searchetfs">
               <ListItemIcon>
                 <SearchIcon />
               </ListItemIcon>
@@ -95,7 +96,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomeComponent dataFromChild={dataFromChild} />} />
           <Route path="/home" element={<HomeComponent dataFromChild={dataFromChild} />} />
-          <Route path="/main" element={<SearchIndividualStocksComponent dataFromChild={dataFromChild} />} />
+          <Route path="/searchstocks" element={<SearchIndividualStocksComponent dataFromChild={dataFromChild} />} />
+          <Route path="/searchetfs" element={<SearchETFSComponent dataFromChild={dataFromChild} />} />
         </Routes>
       </div>
       <Snackbar
