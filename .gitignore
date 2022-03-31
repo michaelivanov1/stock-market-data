@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .env
+backup-data-sets
 
 # testing
 /coverage
