@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .env
+# locally stored data sets incase i lose the github ones
 backup-data-sets
 
 # testing
