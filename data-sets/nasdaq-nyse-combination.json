@@ -22098,12 +22098,6 @@
    "exchange": "NYSE"
  },
  {
-   "ticker": "AMOV",
-   "name": "America Movil, S.A.B. de C.V.",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
    "ticker": "AMP",
    "name": "AMERIPRISE FINANCIAL SERVICES, INC.",
    "is_etf": null,
@@ -26778,12 +26772,6 @@
    "exchange": "NYSE"
  },
  {
-   "ticker": "EGHT",
-   "name": "8x8 Inc",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
    "ticker": "EGIF",
    "name": "Eagle Growth and Income Opportunities Fund",
    "is_etf": null,
@@ -28776,12 +28764,6 @@
    "exchange": "NYSE"
  },
  {
-   "ticker": "GOLD",
-   "name": "Barrick Gold Corporation",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
    "ticker": "GOLF",
    "name": "Acushnet Holdings Corp.",
    "is_etf": null,
@@ -30008,12 +29990,6 @@
  {
    "ticker": "INF",
    "name": "Brookfield Global Listed Infrastructure Income Fund",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
-   "ticker": "INFO",
-   "name": "IHS Markit Ltd.",
    "is_etf": null,
    "exchange": "NYSE"
  },
@@ -32472,12 +32448,6 @@
    "exchange": "NYSE"
  },
  {
-   "ticker": "MSG",
-   "name": "The Madison Square Garden Company",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
    "ticker": "MS^G",
    "name": "Morgan Stanley",
    "is_etf": null,
@@ -32894,12 +32864,6 @@
  {
    "ticker": "NCI",
    "name": "Navigant Consulting, Inc.",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
-   "ticker": "NCLH",
-   "name": "Norwegian Cruise Line Holdings Ltd.",
    "is_etf": null,
    "exchange": "NYSE"
  },
@@ -34590,12 +34554,6 @@
    "exchange": "NYSE"
  },
  {
-   "ticker": "PGTI",
-   "name": "PGT Innovations, Inc.",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
    "ticker": "PGZ",
    "name": "Principal Real Estate Income Fund",
    "is_etf": null,
@@ -35382,12 +35340,6 @@
    "exchange": "NYSE"
  },
  {
-   "ticker": "QGEN",
-   "name": "Qiagen N.V.",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
    "ticker": "QHC",
    "name": "Quorum Health Corporation",
    "is_etf": null,
@@ -35970,12 +35922,6 @@
    "exchange": "NYSE"
  },
  {
-   "ticker": "RRD",
-   "name": "R.R. Donnelley & Sons Company",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
    "ticker": "RRTS",
    "name": "Roadrunner Transportation Systems, Inc.",
    "is_etf": null,
@@ -36212,12 +36158,6 @@
  {
    "ticker": "SAR",
    "name": "Saratoga Investment Corp",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
-   "ticker": "SAVE",
-   "name": "Spirit Airlines, Inc.",
    "is_etf": null,
    "exchange": "NYSE"
  },
@@ -38642,12 +38582,6 @@
  {
    "ticker": "UNF",
    "name": "Unifirst Corporation",
-   "is_etf": null,
-   "exchange": "NYSE"
- },
- {
-   "ticker": "UNFI",
-   "name": "United Natural Foods, Inc.",
    "is_etf": null,
    "exchange": "NYSE"
  },
