@@ -2,6 +2,8 @@ A personal project that fetches American stock market data from "alphavantage" A
 
 Users can choose from which stock exchange they would like to see data from. ex: NYSE or NASDAQ
 
+Users can view individual stocks or ETFs. (more to be added)
+
 Tickers are fetched from JSON file(s) that are in the data-sets folder in this repository.
 
 
