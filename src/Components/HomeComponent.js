@@ -28,14 +28,15 @@ const HomeComponent = () => {
                     <p style={{ fontSize: 20, color: 'black' }}>INDIVIDUAL STOCKS:</p>
                     Users can choose what American stock exchange they would like to view data from.
                     <br /><br />
-                    Current exchanges implemented (more to be added):
+                    Current exchanges implemented:
+                    <br />- ALL (Mix of NYSE and NASDAQ)
                     <br />- NYSE
                     <br />- NASDAQ
                     <br /><br />Users can then choose from a list of tickers and a table will be displayed with data such as open/close price, high/low price, and volume.
                     <p style={{ fontSize: 20, color: 'black' }}>ETFs:</p>
-                    * TO BE IMPLEMENTED *
-                    <br />
                     Users can choose which American ETFs (exchange traded funds) they would like to view data from.
+                    <br /><br/>
+                    Currently there are 500 American ETFs filtered by market cap that the user can choose.
                 </CardContent>
                 <CardHeader
                     style={{ color: 'black', borderBottom: '1px solid #eaecef' }}

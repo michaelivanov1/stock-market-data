@@ -172,12 +172,6 @@ const SearchETFSComponent = (props) => {
                     />
 
                     <CardContent>
-                        <div>
-                            <Typography color="error" style={{ textAlign: 'center' }}>{state.msg}</Typography>
-                        </div>
-                    </CardContent>
-
-                    <CardContent>
                         <Autocomplete
                             data-testid="autocomplete"
                             options={state.allTickersFromEtfFileArray}
@@ -216,7 +210,6 @@ const SearchETFSComponent = (props) => {
                             </Grid>
                         </MuiPickersUtilsProvider>
                     }
-
                     {state.userFilteredByDate &&
                         <Button
                             style={{
@@ -231,7 +224,6 @@ const SearchETFSComponent = (props) => {
                             onClick={onViewDataButtonClick}
                         >DISPLAY DATA</Button>
                     }
-
 
                 </Card>
                 {state.userFilteredByDate && state.userSelectedATicker && state.userClickedDisplayData &&

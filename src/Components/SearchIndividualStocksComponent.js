@@ -36,6 +36,7 @@ import moment from "moment";
 // grab JSON url's from helper file
 const fetchAllTickersFromNYSEURL = dataSetHelper.NYSETickers;
 const fetchAllTickersFromNASDAQURL = dataSetHelper.NASDAQTickers;
+const fetchAllTickersFromNYSEAndNASDAQURL = dataSetHelper.NYSEAndNASDAQCombination;
 
 const SearchIndividualStocksComponent = (props) => {
 
@@ -48,12 +49,15 @@ const SearchIndividualStocksComponent = (props) => {
         // hold all json data fetched from json data sets in "data-sets" folder in my github repo
         allDataFromNYSEArray: [],
         allDataFromNASDAQArray: [],
+        allDataFromNYSEAndNASDAQArray: [],
         // hold just all the ticker values fetched from the json data sets
         allTickersFromNYSEArray: [],
         allTickersFromNASDAQArray: [],
+        allTickersFromNYSEAndNASDAQArray: [],
         // bools to determine which data to display
         userSelectedNYSE: false,
         userSelectedNASDAQ: false,
+        userSelectedNYSEAndNASDAQ: false,
         // bools to determine which components to display based on if user is selecting the filters
         userFilteredByExchange: false,
         userFilteredByDate: false,
@@ -73,6 +77,7 @@ const SearchIndividualStocksComponent = (props) => {
         closePrice: [],
         volume: [],
     };
+    
     const reducer = (state, newState) => ({ ...state, ...newState });
     const [state, setState] = useReducer(reducer, initialState);
 
@@ -94,7 +99,15 @@ const SearchIndividualStocksComponent = (props) => {
     // handle changes in the autocomplete
     const autocompleteOnChange = (e, selectedTicker) => {
         let findStockNameByTicker = "";
-        if (state.userSelectedNYSE) {
+        if (state.userSelectedNYSEAndNASDAQ) {
+            try {
+                findStockNameByTicker = state.allDataFromNYSEAndNASDAQArray.find(n => n.ticker === selectedTicker);
+                setState({ userSelectedATicker: true });
+            } catch (e) {
+                console.log(`error using autocomplete. autocomplete value is null: ${e}`);
+            }
+        }
+        else if (state.userSelectedNYSE) {
             try {
                 findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedTicker);
                 setState({ userSelectedATicker: true });
@@ -128,16 +141,21 @@ const SearchIndividualStocksComponent = (props) => {
             let fetchAllTickersFromNYSEResponse = await fetch(fetchAllTickersFromNYSEURL);
             let fetchAllTickersFromNYSEJson = await fetchAllTickersFromNYSEResponse.json();
 
-            let fetAllTickersFromNASDAQResponse = await fetch(fetchAllTickersFromNASDAQURL);
-            let fetchAllTickersFromNASDAQJson = await fetAllTickersFromNASDAQResponse.json();
+            let fetchAllTickersFromNASDAQResponse = await fetch(fetchAllTickersFromNASDAQURL);
+            let fetchAllTickersFromNASDAQJson = await fetchAllTickersFromNASDAQResponse.json();
+
+            let fetchAllTickersFromNYSEAndNASDAQResponse = await fetch(fetchAllTickersFromNYSEAndNASDAQURL);
+            let fetchAllTickersFromNYSEAndNASDAQJson = await fetchAllTickersFromNYSEAndNASDAQResponse.json();
 
             sendMessageToSnackbar("All tickers loaded");
 
             setState({
                 allDataFromNYSEArray: fetchAllTickersFromNYSEJson,
                 allDataFromNASDAQArray: fetchAllTickersFromNASDAQJson,
+                allDataFromNYSEAndNASDAQArray: fetchAllTickersFromNYSEAndNASDAQJson,
                 allTickersFromNYSEArray: fetchAllTickersFromNYSEJson.map((t) => t.ticker),
                 allTickersFromNASDAQArray: fetchAllTickersFromNASDAQJson.map((t) => t.ticker),
+                allTickersFromNYSEAndNASDAQArray: fetchAllTickersFromNYSEAndNASDAQJson.map((t) => t.ticker),
             });
         } catch (error) {
             console.log(`error loading JSON data sets: ${error}`);
@@ -169,15 +187,24 @@ const SearchIndividualStocksComponent = (props) => {
 
     // set states for each radio button
     const handleRadioButtonChange = (event) => {
+        if (event.target.value === "all") {
+            setState({ userSelectedNYSEAndNASDAQ: true });
+            setState({ userSelectedNASDAQ: false });
+            setState({ userSelectedNYSE: false });
+            setState({ userFilteredByExchange: true });
+            sendMessageToSnackbar(`Found ${state.allTickersFromNYSEAndNASDAQArray.length} tickers in ALL`)
+        }
         if (event.target.value === "nyse") {
-            setState(state.userSelectedNYSE = true);
-            setState(state.userSelectedNASDAQ = false);
+            setState({ userSelectedNYSE: true });
+            setState({ userSelectedNASDAQ: false });
+            setState({ userSelectedNYSEAndNASDAQ: false });
             setState({ userFilteredByExchange: true });
             sendMessageToSnackbar(`Found ${state.allTickersFromNYSEArray.length} tickers in NYSE`)
         }
         if (event.target.value === "nasdaq") {
             setState({ userSelectedNASDAQ: true });
             setState({ userSelectedNYSE: false });
+            setState({ userSelectedNYSEAndNASDAQ: false });
             setState({ userFilteredByExchange: true });
             sendMessageToSnackbar(`Found ${state.allTickersFromNASDAQArray.length} tickers in NASDAQ`);
         }
@@ -201,7 +228,6 @@ const SearchIndividualStocksComponent = (props) => {
         state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined ||
         state.formattedDate === "" || state.formattedDate === undefined;
 
-        
 
     return (
         <ThemeProvider theme={theme}>
@@ -219,6 +245,7 @@ const SearchIndividualStocksComponent = (props) => {
                         onChange={handleRadioButtonChange}
                         style={{ justifyContent: 'center' }}
                     >
+                        <FormControlLabel value="all" control={<Radio />} label="ALL" labelPlacement="top" />
                         <FormControlLabel value="nyse" control={<Radio />} label="NYSE" labelPlacement="top" />
                         <FormControlLabel value="nasdaq" control={<Radio />} label="NASDAQ" labelPlacement="top" />
                     </RadioGroup>
@@ -252,6 +279,23 @@ const SearchIndividualStocksComponent = (props) => {
                     }
 
                     <CardContent>
+                        {state.userSelectedNYSEAndNASDAQ && state.userFilteredByDate &&
+                            <Autocomplete
+                                data-testid="autocomplete"
+                                options={state.allTickersFromNYSEAndNASDAQArray}
+                                getOptionLabel={(option) => option}
+                                style={{ width: 300, margin: 'auto', color: theme.palette.primary.main }}
+                                onChange={autocompleteOnChange}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="search by all tickers"
+                                        variant="outlined"
+                                        fullWidth
+                                    />
+                                )}
+                            />
+                        }
                         {state.userSelectedNYSE && state.userFilteredByDate &&
                             <Autocomplete
                                 data-testid="autocomplete"
