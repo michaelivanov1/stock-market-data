@@ -2,9 +2,12 @@ import React, { useReducer } from "react";
 import { Route, Link, Routes } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
+
 import HomeComponent from "./Components/HomeComponent";
 import SearchIndividualStocksComponent from "./Components/SearchIndividualStocksComponent";
 import SearchETFSComponent from "./Components/SearchETFSComponent";
+import DataVisualizationComponent from "./Components/DataVisualizationComponent";
+
 import {
   Toolbar,
   AppBar,
@@ -70,7 +73,7 @@ const App = () => {
             </ListItemButton>
           </ListItem>
           <Divider />
-          <ListSubheader>Search Methods</ListSubheader>
+          <ListSubheader>Search methods</ListSubheader>
           <ListItem>
             <ListItemButton component={Link} to="/searchstocks">
               <ListItemIcon>
@@ -88,7 +91,16 @@ const App = () => {
               <ListItemText primary="Search ETFs" />
             </ListItemButton>
           </ListItem>
+          <ListSubheader>Data visualization with graphs</ListSubheader>
           <Divider />
+          <ListItem>
+            <ListItemButton component={Link} to="/datavisualization">
+              <ListItemIcon>
+                <SearchIcon />
+              </ListItemIcon>
+              <ListItemText primary="Data Visualization" />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Box>
 
@@ -98,6 +110,7 @@ const App = () => {
           <Route path="/home" element={<HomeComponent dataFromChild={dataFromChild} />} />
           <Route path="/searchstocks" element={<SearchIndividualStocksComponent dataFromChild={dataFromChild} />} />
           <Route path="/searchetfs" element={<SearchETFSComponent dataFromChild={dataFromChild} />} />
+          <Route path="/datavisualization" element={<DataVisualizationComponent dataFromChild={dataFromChild} />} />
         </Routes>
       </div>
       <Snackbar
