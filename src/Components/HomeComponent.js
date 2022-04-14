@@ -17,7 +17,7 @@ const HomeComponent = () => {
                     title="Description of application"
                     titleTypographyProps={{ variant: 'h5' }}
                 />
-                <CardContent>This application is made to display American stock market data based on some user request or input.
+                <CardContent>This application is made to display American stock market data based on some user request or input.<b> It is a work in progress.</b>
                 </CardContent>
                 <CardHeader
                     style={{ color: 'black', borderBottom: '1px solid #eaecef' }}
