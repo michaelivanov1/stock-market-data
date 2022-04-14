@@ -57,8 +57,9 @@ const DataVisualizationComponent = () => {
             xValueFormatString: "MMMM YY",
             dataPoints: [
 
-                { x: new Date(date[0].startDate), y: [44.73, 47.64, 42.67, 46.16] },
-                { x: new Date(date[0].endDate), y: [44.73, 47.64, 42.67, 46.16] },
+                // open, high, low, close
+                { x: new Date(date[0].startDate), y: [12.70, 13.05, 12.57, 12.70] },
+                { x: new Date(date[0].endDate), y: [12.95, 13.34, 12.48, 12.84] },
                 // { x: new Date("2017-11-04"), y: [44.73, 47.64, 42.67, 46.16] },
                 // { x: new Date("2017-11-05"), y: [44.73, 47.64, 42.67, 46.16] },
                 // { x: new Date("2017-11-06"), y: [44.73, 47.64, 42.67, 46.16] },
