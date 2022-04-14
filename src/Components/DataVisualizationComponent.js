@@ -77,7 +77,7 @@ const DataVisualizationComponent = () => {
             <Box textAlign='center'>
                 <Card style={{ marginLeft: '25%', width: "50%", boxShadow: 'none' }}>
                     <CardHeader
-                        title="TODO: add graphs"
+                        title="work in progress"
                         style={{ color: 'black', textAlign: "center" }}
                     />
                 </Card>
