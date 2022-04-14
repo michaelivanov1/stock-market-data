@@ -1,6 +1,6 @@
 **This is a project I am working on over a long period of time to get very familiar with React, it is not done.**
 
-A personal project that fetches American stock market data from "alphavantage" API such as open price, high/low prices, close prices, and volume on any given day.
+A personal project that fetches American stock market data from "alphavantage" API such as open price, high/low prices, close prices, and volume on any weekday.
 
 Users can choose from which stock exchange they would like to see data from. ex: NYSE or NASDAQ
 
