@@ -11,6 +11,7 @@ import {
     TextField,
     Button,
     Box,
+    Typography,
 } from "@mui/material";
 
 import 'react-date-range/dist/styles.css'; // main css file
@@ -61,7 +62,7 @@ const DataVisualizationComponent = (props) => {
             let alphavantageUrlJson = await alphavantageUrlResponse.json();
 
             for (let date in alphavantageUrlJson['Time Series (Daily)']) {
-                console.log(date)
+                // console.log(date)
                 stockChartXValuesArr.push(date);
                 stockChartYValuesArr.push(alphavantageUrlJson['Time Series (Daily)'][date]['1. open']);
             }
@@ -162,8 +163,12 @@ const DataVisualizationComponent = (props) => {
                             disabled={emptyorundefined}
                             variant="contained"
                             onClick={onViewDataButtonClick}
-                        >DISPLAY DATA</Button>
+                        >display data</Button>
                     </CardContent>
+
+                    <Typography>
+                        {state.grabSelectedTickersName}
+                    </Typography>
 
                     <CardContent>
                         {state.userDisplayedData === true &&
@@ -181,7 +186,7 @@ const DataVisualizationComponent = (props) => {
                                     // turn off modebar on hover
                                     displayModeBar: false
                                 }}
-                                layout={{ width: '50%', height: '50%', /* title: `showing data for ${state.grabSelectedTickersName}` */ }}
+                                layout={{ width: '50%', height: '50%', /* title: `showing data for ${state.grabSelectedTicker}` */ }}
                             />
                         }
                     </CardContent>
