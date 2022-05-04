@@ -14,7 +14,12 @@ import {
 import CoinComponent from './CoinComponent';
 
 
-const CryptoComponent = () => {
+const CryptoComponent = (props) => {
+
+    // send snackbar messages to App.js
+    const sendMessageToSnackbar = (msg) => {
+        props.dataFromChild(msg);
+    }
 
     const amountOfCurrenciesDisplayed = 100;
 
@@ -26,9 +31,14 @@ const CryptoComponent = () => {
     }, []);
 
     const fetchApiData = async () => {
-        let res = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=cad&order=market_cap_desc&per_page=${amountOfCurrenciesDisplayed}&page=1&sparkline=false`);
-        let json = await res.json();
-        setCoins(json);
+        try {
+            let res = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=cad&order=market_cap_desc&per_page=${amountOfCurrenciesDisplayed}&page=1&sparkline=false`);
+            let json = await res.json();
+            setCoins(json);
+            sendMessageToSnackbar('Crypto data loaded');
+        } catch (err) {
+            alert(`error fetching data: ${err}`);
+        }
     }
 
     const handleChange = e => {
@@ -40,19 +50,26 @@ const CryptoComponent = () => {
     );
 
     return (
-        <Card style={{ marginLeft: '25%', width: "50%", boxShadow: 'none' }}>
-            <div className='coin-app'>
-                <div className='coin-search'>
-                    <h1 className='coin-text'>Search a coin</h1>
-                    <TextField
-                        onChange={handleChange}
-                        sx={{
-                            width: '300px'
-                        }}
-                        label="Enter coin here"
-                        variant="standard"
-                    />
+        <Card>
+            <CardContent>
+                <Typography variant="h4" color="black" align="center" width="100%" marginBottom="20px">
+                    search a coin
+                </Typography>
+                <div className='coin-app'>
+                    <div className='coin-search'>
+                        <TextField
+                            onChange={handleChange}
+                            sx={{
+                                width: '300px'
+                            }}
+                            label="Enter coin here"
+                            variant="standard"
+                        />
+                    </div>
                 </div>
+            </CardContent>
+
+            <CardContent style={{ marginLeft: '25%', width: "50%", boxShadow: 'none', maxHeight: '600px', overflow: 'auto' }}>
                 {filteredCoins.map((coin) => {
                     return (
                         <CoinComponent
@@ -67,7 +84,7 @@ const CryptoComponent = () => {
                         />
                     )
                 })}
-            </div>
+            </CardContent>
         </Card>
     )
 }

@@ -11,7 +11,7 @@ import "../App.css";
 const HomeComponent = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Card style={{ marginLeft: '25%', width: '60%', boxShadow: 'none' }}>
+            <Card style={{ marginLeft: '25%', width: '60%', boxShadow: 'none', maxHeight: '790px', overflow: 'auto' }}>
                 <CardHeader
                     style={{ color: 'black', borderBottom: '1px solid #eaecef' }}
                     title="Description of application"

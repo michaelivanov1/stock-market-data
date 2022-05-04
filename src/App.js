@@ -14,6 +14,7 @@ import {
   AppBar,
   Typography,
   Snackbar,
+  Container,
 } from "@mui/material";
 
 import Box from '@mui/material/Box';
@@ -49,7 +50,6 @@ const App = () => {
   const dataFromChild = (msg) => {
     setState({ snackbarMsg: msg, gotData: true });
   };
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -131,6 +131,17 @@ const App = () => {
         autoHideDuration={4000}
         onClose={snackbarClose}
       />
+
+      <Toolbar style={{
+        position: 'fixed',
+        left: 0,
+        bottom: 0,
+        right: 0,
+        borderTop: '1px solid black',
+        backgroundColor: 'white',
+      }}>
+        <Typography style={{ textAlign: 'center', flexGrow: '1', fontSize: '20px' }}>Michael Ivanov - {new Date().getFullYear()}</Typography>
+      </Toolbar>
     </ThemeProvider>
   );
 };
@@ -139,7 +150,7 @@ const styles = {
   boxStyles: {
     maxWidth: '20%',
     position: 'absolute',
-    //border: '1px solid black',
+    paddingBottom: '60px',
 
     "@media (max-width: 850px)": {
       maxWidth: '100%',

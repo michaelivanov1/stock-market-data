@@ -100,7 +100,7 @@ const DataVisualizationComponent = (props) => {
             let fetchAllTickersFromNYSEAndNASDAQResponse = await fetch(fetchAllTickersFromNYSEAndNASDAQURL);
             let fetchAllTickersFromNYSEAndNASDAQJson = await fetchAllTickersFromNYSEAndNASDAQResponse.json();
 
-            sendMessageToSnackbar("All tickers loaded");
+            sendMessageToSnackbar("Data visualization loaded");
 
             setState({
                 allDataFromNYSEAndNASDAQArray: fetchAllTickersFromNYSEAndNASDAQJson,
@@ -112,16 +112,6 @@ const DataVisualizationComponent = (props) => {
         }
     };
 
-    // fetch the data from alphavantage api onclick
-    // const onViewDataButtonClick = () => {
-    //     console.log(`button click ticker state: ${state.grabSelectedTicker}`);
-    //     setState({ userDisplayedData: true });
-    //     // fetchAlphaVantageData(state.grabSelectedTicker);
-    // }
-
-    // keep button disabled until user inputs some data
-    // const emptyorundefined =
-    //     state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined;
 
     return (
         <ThemeProvider theme={theme}>
@@ -147,23 +137,7 @@ const DataVisualizationComponent = (props) => {
                                 />
                             )}
                         />
-                    </CardContent>
-
-                    {/* <CardContent>
-                        <Button
-                            style={{
-                                borderRadius: 10,
-                                backgroundColor: "lightgray",
-                                padding: "10px 20px",
-                                fontSize: "18px",
-                                marginTop: 20,
-                                color: 'black',
-                            }}
-                            disabled={emptyorundefined}
-                            variant="contained"
-                            onClick={onViewDataButtonClick}
-                        >display data</Button>
-                    </CardContent> */}
+                    </CardContent>                
 
                     <Typography>
                         {state.grabSelectedTickersName}

@@ -147,7 +147,7 @@ const SearchIndividualStocksComponent = (props) => {
             let fetchAllTickersFromNYSEAndNASDAQResponse = await fetch(fetchAllTickersFromNYSEAndNASDAQURL);
             let fetchAllTickersFromNYSEAndNASDAQJson = await fetchAllTickersFromNYSEAndNASDAQResponse.json();
 
-            sendMessageToSnackbar("All tickers loaded");
+            sendMessageToSnackbar("All stock tickers loaded");
 
             setState({
                 allDataFromNYSEArray: fetchAllTickersFromNYSEJson,

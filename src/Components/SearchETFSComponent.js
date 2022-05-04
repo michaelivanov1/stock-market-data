@@ -109,7 +109,7 @@ const SearchETFSComponent = (props) => {
             let fetchAllEtfsFromFileResponse = await fetch(fetchAllEtfsFromFile);
             let fetchAllEtfsFromFileJson = await fetchAllEtfsFromFileResponse.json();
 
-            sendMessageToSnackbar("All tickers loaded");
+            sendMessageToSnackbar("All ETF tickers loaded");
 
             setState({
                 allDataFromEtfFileArray: fetchAllEtfsFromFileJson,

@@ -2,20 +2,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px;
 }
 
 .coin-search {
-  margin-bottom: 60px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-content: center;
-}
-
-.coin-text {
-  margin-bottom: 32px;
-  text-align: center;
 }
 
 .coin-input::placeholder {
