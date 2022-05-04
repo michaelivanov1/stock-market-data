@@ -92,7 +92,7 @@ const App = () => {
               <ListItemText primary="Search ETFs" />
             </ListItemButton>
           </ListItem>
-          <ListSubheader>Data visualization with graphs</ListSubheader>
+          <ListSubheader>Data visualization with graphs <b>*In progress*</b></ListSubheader>
           <Divider />
           <ListItem>
             <ListItemButton component={Link} to="/datavisualization">
@@ -102,7 +102,7 @@ const App = () => {
               <ListItemText primary="Data Visualization" />
             </ListItemButton>
           </ListItem>
-          <ListSubheader>Crypto <b>*NEW*</b></ListSubheader>
+          <ListSubheader>Crypto</ListSubheader>
           <Divider />
           <ListItem>
             <ListItemButton component={Link} to="/crypto">

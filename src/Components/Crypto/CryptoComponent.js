@@ -1,13 +1,12 @@
+// docs: https://www.coingecko.com/en/api/documentation
+
 import React, { useState, useEffect } from 'react';
 import './Crypto.css';
 
 import {
     Card,
-    CardHeader,
     CardContent,
-    Autocomplete,
     TextField,
-    Box,
     Typography,
 } from "@mui/material";
 
@@ -69,7 +68,7 @@ const CryptoComponent = (props) => {
                 </div>
             </CardContent>
 
-            <CardContent style={{ marginLeft: '25%', width: "50%", boxShadow: 'none', maxHeight: '600px', overflow: 'auto' }}>
+            <CardContent style={{ marginLeft: '22%', width: "54%", boxShadow: 'none', maxHeight: '600px', overflow: 'auto' }}>
                 {filteredCoins.map((coin) => {
                     return (
                         <CoinComponent
