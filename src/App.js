@@ -7,6 +7,7 @@ import HomeComponent from "./Components/HomeComponent";
 import SearchIndividualStocksComponent from "./Components/SearchIndividualStocksComponent";
 import SearchETFSComponent from "./Components/SearchETFSComponent";
 import DataVisualizationComponent from "./Components/DataVisualizationComponent";
+import CryptoComponent from "./Components/Crypto/CryptoComponent";
 
 import {
   Toolbar,
@@ -101,6 +102,16 @@ const App = () => {
               <ListItemText primary="Data Visualization" />
             </ListItemButton>
           </ListItem>
+          <ListSubheader>Crypto <b>*NEW*</b></ListSubheader>
+          <Divider />
+          <ListItem>
+            <ListItemButton component={Link} to="/crypto">
+              <ListItemIcon>
+                <SearchIcon />
+              </ListItemIcon>
+              <ListItemText primary="Crypto" />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Box>
 
@@ -111,6 +122,7 @@ const App = () => {
           <Route path="/searchstocks" element={<SearchIndividualStocksComponent dataFromChild={dataFromChild} />} />
           <Route path="/searchetfs" element={<SearchETFSComponent dataFromChild={dataFromChild} />} />
           <Route path="/datavisualization" element={<DataVisualizationComponent dataFromChild={dataFromChild} />} />
+          <Route path="/crypto" element={<CryptoComponent dataFromChild={dataFromChild} />} />
         </Routes>
       </div>
       <Snackbar

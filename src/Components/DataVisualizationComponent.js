@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from "react";
+import React, { useReducer, useEffect } from "react";
 
 import Plot from 'react-plotly.js';
 
@@ -9,14 +9,12 @@ import {
     CardContent,
     Autocomplete,
     TextField,
-    Button,
     Box,
     Typography,
 } from "@mui/material";
 
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import { DateRange } from 'react-date-range';
 
 import theme from "../theme";
 
@@ -43,7 +41,6 @@ const DataVisualizationComponent = (props) => {
         stockChartYValues: [],
         grabSelectedTickersName: "",
         grabSelectedTicker: "",
-        userDisplayedData: false,
     };
 
     let stockChartXValuesArr = [];
@@ -79,6 +76,8 @@ const DataVisualizationComponent = (props) => {
         let findStockNameByTicker = "";
         try {
             findStockNameByTicker = state.allDataFromNYSEAndNASDAQArray.find(n => n.ticker === selectedTicker);
+            fetchAlphaVantageData(selectedTicker);
+            console.log(`selected ticker: ${selectedTicker}`);
         } catch (e) {
             console.log(`error using autocomplete. autocomplete value is null: ${e}`);
         }
@@ -86,7 +85,7 @@ const DataVisualizationComponent = (props) => {
             // set stocks name based on user selection
             setState({ grabSelectedTickersName: findStockNameByTicker.name })
             // set stocks ticker based on user selection
-            setState({ grabSelectedTicker: findStockNameByTicker.ticker })
+            setState({ grabSelectedTicker: selectedTicker })
         }
     };
 
@@ -114,15 +113,15 @@ const DataVisualizationComponent = (props) => {
     };
 
     // fetch the data from alphavantage api onclick
-    const onViewDataButtonClick = () => {
-        console.log(`button click ticker state: ${state.grabSelectedTicker}`);
-        setState({ userDisplayedData: true });
-        fetchAlphaVantageData(state.grabSelectedTicker);
-    }
+    // const onViewDataButtonClick = () => {
+    //     console.log(`button click ticker state: ${state.grabSelectedTicker}`);
+    //     setState({ userDisplayedData: true });
+    //     // fetchAlphaVantageData(state.grabSelectedTicker);
+    // }
 
     // keep button disabled until user inputs some data
-    const emptyorundefined =
-        state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined;
+    // const emptyorundefined =
+    //     state.grabSelectedTicker === "" || state.grabSelectedTicker === undefined;
 
     return (
         <ThemeProvider theme={theme}>
@@ -143,14 +142,14 @@ const DataVisualizationComponent = (props) => {
                                 <TextField
                                     {...params}
                                     label="search by all tickers"
-                                    variant="outlined"
+                                    variant="standard"
                                     fullWidth
                                 />
                             )}
                         />
                     </CardContent>
 
-                    <CardContent>
+                    {/* <CardContent>
                         <Button
                             style={{
                                 borderRadius: 10,
@@ -164,31 +163,29 @@ const DataVisualizationComponent = (props) => {
                             variant="contained"
                             onClick={onViewDataButtonClick}
                         >display data</Button>
-                    </CardContent>
+                    </CardContent> */}
 
                     <Typography>
                         {state.grabSelectedTickersName}
                     </Typography>
 
                     <CardContent>
-                        {state.userDisplayedData === true &&
-                            <Plot
-                                data={[
-                                    {
-                                        x: state.stockChartXValues,
-                                        y: state.stockChartYValues,
-                                        type: 'scatter',
-                                        //mode: 'lines+markers',
-                                        marker: { color: 'green' },
-                                    }
-                                ]}
-                                config={{
-                                    // turn off modebar on hover
-                                    displayModeBar: false
-                                }}
-                                layout={{ width: '50%', height: '50%', /* title: `showing data for ${state.grabSelectedTicker}` */ }}
-                            />
-                        }
+                        <Plot
+                            data={[
+                                {
+                                    x: state.stockChartXValues,
+                                    y: state.stockChartYValues,
+                                    type: 'scatter',
+                                    //mode: 'lines+markers',
+                                    marker: { color: 'green' },
+                                }
+                            ]}
+                            config={{
+                                // turn off modebar on hover
+                                displayModeBar: false
+                            }}
+                            layout={{ width: '50%', height: '50%', /* title: `showing data for ${state.grabSelectedTicker}` */ }}
+                        />
                     </CardContent>
                 </Card>
             </Box>
