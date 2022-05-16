@@ -14,7 +14,6 @@ import {
   AppBar,
   Typography,
   Snackbar,
-  Container,
 } from "@mui/material";
 
 import Box from '@mui/material/Box';
@@ -131,7 +130,6 @@ const App = () => {
         autoHideDuration={4000}
         onClose={snackbarClose}
       />
-
       <Toolbar style={{
         position: 'fixed',
         left: 0,

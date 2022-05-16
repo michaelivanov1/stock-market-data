@@ -37,6 +37,12 @@ const HomeComponent = () => {
                     Users can choose which American ETFs (exchange traded funds) they would like to view data from.
                     <br />
                     Currently there are 500 American ETFs filtered by market cap that the user can choose.
+                    <p style={{ fontSize: 20, color: 'black' }}>DATA VISUALIZATION:</p>
+                    Users can choose a ticker and a graph will be displayed with the stock data since inception.
+                    <p style={{ fontSize: 20, color: 'black' }}>CRYPTO:</p>
+                    Users can search/view data for a variable number of coins.
+                    <br />
+                    Data such as ticker, price, volume, percentage change (24hr), and marketcap.
                 </CardContent>
                 <CardHeader
                     style={{ color: 'black', borderBottom: '1px solid #eaecef' }}
@@ -52,8 +58,9 @@ const HomeComponent = () => {
                     title="Resources used"
                     titleTypographyProps={{ variant: 'h5' }}
                 />
-                <CardContent>The API being used is alphavantage. This fetches data for the high/low, open/close and volume of stock(s).
-                    <br /><br />The tickers are being pulled from JSON files that I have listed on my <a href="https://github.com/michaelivanov1/stock-market-data">GitHub</a> in the "data-sets" folder.
+                <CardContent>The API for stock data is alphavantage. This fetches data for the high/low, open/close and volume of stocks.<br />
+                    <br />The API for crypto data is coingecko. This fetches data for the name, ticker, price, volume, price change (24hr), and marketcap of coins.<br />
+                    <br />The tickers are being pulled from JSON files that I have listed on my <a href="https://github.com/michaelivanov1/stock-market-data">GitHub</a> in the "data-sets" folder.<br />
                 </CardContent>
             </Card>
         </ThemeProvider >
