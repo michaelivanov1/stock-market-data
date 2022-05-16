@@ -16,10 +16,10 @@ import {
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
-import theme from "../theme";
+import theme from "../../theme";
 
 // import a helper that houses some useful functions
-import { dataSetHelper } from "../Helpers/helpers";
+import { dataSetHelper } from "../../Helpers/helpers";
 
 
 const DataVisualizationComponent = (props) => {

@@ -1,12 +1,12 @@
 import React from "react";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "../theme";
+import theme from "../../theme";
 import {
     Card,
     CardHeader,
     CardContent,
 } from "@mui/material";
-import "../App.css";
+import "../../App.css";
 
 const HomeComponent = () => {
     return (

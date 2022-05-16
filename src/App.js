@@ -3,10 +3,10 @@ import { Route, Link, Routes } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 
-import HomeComponent from "./Components/HomeComponent";
-import SearchIndividualStocksComponent from "./Components/SearchIndividualStocksComponent";
-import SearchETFSComponent from "./Components/SearchETFSComponent";
-import DataVisualizationComponent from "./Components/DataVisualizationComponent";
+import HomeComponent from "./Components/StockMarket/HomeComponent";
+import SearchIndividualStocksComponent from "./Components/StockMarket/SearchIndividualStocksComponent";
+import SearchETFSComponent from "./Components/StockMarket/SearchETFSComponent";
+import DataVisualizationComponent from "./Components/StockMarket/DataVisualizationComponent";
 import CryptoComponent from "./Components/Crypto/CryptoComponent";
 
 import {

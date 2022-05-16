@@ -19,7 +19,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
-import theme from "../theme";
+import theme from "../../theme";
 // imports for date picker
 import 'date-fns';
 import Grid from '@material-ui/core/Grid';
@@ -29,7 +29,7 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 // import a helper that houses some useful functions
-import { dataSetHelper } from "../Helpers/helpers";
+import { dataSetHelper } from "../../Helpers/helpers";
 // for formatting date
 import moment from "moment";
 
