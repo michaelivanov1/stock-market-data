@@ -137,33 +137,35 @@ const DataVisualizationComponent = (props) => {
                                 />
                             )}
                         />
-                    </CardContent>                
+                    </CardContent>
 
                     <Typography>
                         {state.grabSelectedTickersName}
                     </Typography>
 
-                    <CardContent>
-                        <Plot
-                            data={[
-                                {
-                                    x: state.stockChartXValues,
-                                    y: state.stockChartYValues,
-                                    type: 'scatter',
-                                    //mode: 'lines+markers',
-                                    marker: { color: 'green' },
-                                }
-                            ]}
-                            config={{
-                                // turn off modebar on hover
-                                displayModeBar: false
-                            }}
-                            layout={{ width: '50%', height: '50%', /* title: `showing data for ${state.grabSelectedTicker}` */ }}
-                        />
-                    </CardContent>
+                    {state.grabSelectedTickersName != "" &&
+                        <CardContent>
+                            <Plot
+                                data={[
+                                    {
+                                        x: state.stockChartXValues,
+                                        y: state.stockChartYValues,
+                                        type: 'scatter',
+                                        //mode: 'lines+markers',
+                                        marker: { color: 'green' },
+                                    }
+                                ]}
+                                config={{
+                                    // turn off modebar on hover
+                                    displayModeBar: false
+                                }}
+                                layout={{ width: '50%', height: '50%', /* title: `showing data for ${state.grabSelectedTicker}` */ }}
+                            />
+                        </CardContent>
+                    }
                 </Card>
             </Box>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }
 

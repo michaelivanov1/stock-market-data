@@ -27,7 +27,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import ListSubheader from "@mui/material/ListSubheader";
 import Divider from '@mui/material/Divider';
 
-
 const App = () => {
 
   const initialState = {
