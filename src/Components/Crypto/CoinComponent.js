@@ -20,7 +20,7 @@ const CoinComponent = ({
                 </div>
                 <div className='coin-data'>
                     <p className='coin-price'>${price}</p>
-                    <p className='coin-volume'>${volume.toLocaleString()}</p>
+                    <p className='coin-marketcap'>Mkt cap: ${volume.toLocaleString()}</p>
 
                     {priceChange < 0 ? (
                         <p className='coin-percent red'>{priceChange.toFixed(2)}%</p>
@@ -28,8 +28,8 @@ const CoinComponent = ({
                         <p className='coin-percent green'>{priceChange.toFixed(2)}%</p>
                     )}
 
-                    <p className='coin-marketcap'>
-                        Mkt Cap: ${marketcap.toLocaleString()}
+                    <p className='coin-volume'>
+                        Volume: {marketcap.toLocaleString()}
                     </p>
                 </div>
             </div>

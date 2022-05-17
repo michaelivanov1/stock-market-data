@@ -12,7 +12,6 @@ import {
 
 import CoinComponent from './CoinComponent';
 
-
 const CryptoComponent = (props) => {
 
     // send snackbar messages to App.js
@@ -31,7 +30,7 @@ const CryptoComponent = (props) => {
 
     const fetchApiData = async () => {
         try {
-            let res = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=cad&order=market_cap_desc&per_page=${amountOfCurrenciesDisplayed}&page=1&sparkline=false`);
+            let res = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${amountOfCurrenciesDisplayed}&page=1&sparkline=false`);
             let json = await res.json();
             setCoins(json);
             sendMessageToSnackbar('Crypto data loaded');
