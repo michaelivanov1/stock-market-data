@@ -118,7 +118,7 @@ const DataVisualizationComponent = (props) => {
             <Box textAlign='center'>
                 <Card style={{ marginLeft: '25%', width: "50%", boxShadow: 'none' }}>
                     <CardHeader
-                        title="work in progress"
+                        title="Type in a ticker or pick one from the dropdown"
                         style={{ color: 'black', textAlign: "center" }}
                     />
                     <CardContent>

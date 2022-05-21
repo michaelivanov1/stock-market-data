@@ -7,6 +7,7 @@ import {
     Autocomplete,
     TextField,
     Button,
+    Typography,
     Box
 } from "@mui/material";
 import Table from "@material-ui/core/Table";
@@ -250,6 +251,7 @@ const SearchETFSComponent = (props) => {
                                 </TableRow>
                             </TableBody>
                         </Table>
+                        <Typography style={{ textAlign: 'center', marginTop: 30 }}>Some simple data for {state.grabSelectedTickersName} - {state.formattedDate}</Typography>
                     </TableContainer>
                 }
             </Box>

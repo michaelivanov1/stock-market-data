@@ -77,7 +77,7 @@ const SearchIndividualStocksComponent = (props) => {
         closePrice: [],
         volume: [],
     };
-    
+
     const reducer = (state, newState) => ({ ...state, ...newState });
     const [state, setState] = useReducer(reducer, initialState);
 
@@ -106,8 +106,7 @@ const SearchIndividualStocksComponent = (props) => {
             } catch (e) {
                 console.log(`error using autocomplete. autocomplete value is null: ${e}`);
             }
-        }
-        else if (state.userSelectedNYSE) {
+        } else if (state.userSelectedNYSE) {
             try {
                 findStockNameByTicker = state.allDataFromNYSEArray.find(n => n.ticker === selectedTicker);
                 setState({ userSelectedATicker: true });
@@ -339,7 +338,7 @@ const SearchIndividualStocksComponent = (props) => {
                                 backgroundColor: "lightgray",
                                 padding: "10px 20px",
                                 fontSize: "18px",
-                                marginTop: 20,
+                                margin: "20px 20px"
                             }}
                             disabled={emptyorundefined}
                             variant="contained"
@@ -372,6 +371,7 @@ const SearchIndividualStocksComponent = (props) => {
                                 </TableRow>
                             </TableBody>
                         </Table>
+                        <Typography style={{ textAlign: 'center', marginTop: 30 }}>Some simple data for {state.grabSelectedTickersName} - {state.formattedDate}</Typography>
                     </TableContainer>
                 }
             </Box>
