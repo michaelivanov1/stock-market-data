@@ -11,7 +11,7 @@ Users can view data for individual stocks or ETFs in the form of tables & charts
 
 Tickers are fetched from JSON file(s) that are in the data-sets folder in this repository.
 
-**CRYPTO**
+**CRYPTO:**
 
 Fetch crypto data from the "coingecko" API such as ticker, price, mkt cap, volume, daily percentage changed.
 
