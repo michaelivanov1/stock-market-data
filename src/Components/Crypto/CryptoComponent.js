@@ -51,7 +51,7 @@ const CryptoComponent = (props) => {
         <Card>
             <CardContent>
                 <Typography variant="h4" color="black" align="center" width="100%" marginBottom="20px">
-                    search a coin
+                    Search a coin
                 </Typography>
                 <div className='coin-app'>
                     <div className='coin-search'>
