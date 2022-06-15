@@ -16,6 +16,7 @@ Tickers are fetched from JSON file(s) that are in the data-sets folder in this r
 Fetch crypto data from the "coingecko" API such as ticker, price, mkt cap, volume, daily percentage changed.
 
 
+
 HOW TO RUN: 
 1) download all files and install all dependencies 
 2) get an API key from https://www.alphavantage.co/
