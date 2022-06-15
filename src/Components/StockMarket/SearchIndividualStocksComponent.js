@@ -132,9 +132,6 @@ const SearchIndividualStocksComponent = (props) => {
     // grab the JSON data sets and load them. called in useEffect
     const fetchJsonDataSets = async () => {
         try {
-            setState({
-                contactServer: true,
-            });
             sendMessageToSnackbar("Attempting to load data from server...");
 
             let fetchAllTickersFromNYSEResponse = await fetch(fetchAllTickersFromNYSEURL);
