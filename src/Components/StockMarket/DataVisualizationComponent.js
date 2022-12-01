@@ -53,7 +53,7 @@ const DataVisualizationComponent = (props) => {
     const fetchAlphaVantageData = async (ticker) => {
         try {
             // NOTE: can only make 5 api calls per minute, or 500 api calls per day
-            let alphavantageUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&outputsize=full&symbol=${ticker}&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
+            let alphavantageUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol=${ticker}&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
 
             let alphavantageUrlResponse = await fetch(alphavantageUrl);
             let alphavantageUrlJson = await alphavantageUrlResponse.json();
@@ -143,7 +143,7 @@ const DataVisualizationComponent = (props) => {
                         {state.grabSelectedTickersName}
                     </Typography>
 
-                    {state.grabSelectedTickersName != "" &&
+                    {state.grabSelectedTickersName !== "" &&
                         <CardContent>
                             <Plot
                                 data={[

@@ -163,7 +163,7 @@ const SearchIndividualStocksComponent = (props) => {
     const fetchAlphaVantageData = async (ticker, date) => {
         try {
             // NOTE: can only make 5 api calls per minute, or 500 api calls per day
-            let alphavantageUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&outputsize=full&symbol=${ticker}&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
+            let alphavantageUrl = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&symbol=${ticker}&interval=5min&apikey=${process.env.REACT_APP_API_KEY}`;
 
             let alphavantageUrlResponse = await fetch(alphavantageUrl);
             let alphavantageUrlJson = await alphavantageUrlResponse.json();
@@ -174,7 +174,7 @@ const SearchIndividualStocksComponent = (props) => {
             setState({ highPrice: alphavantageUrlJson["Time Series (Daily)"][date]['2. high'] });
             setState({ lowPrice: alphavantageUrlJson["Time Series (Daily)"][date]['3. low'] });
             setState({ closePrice: alphavantageUrlJson["Time Series (Daily)"][date]['4. close'] });
-            setState({ volume: alphavantageUrlJson["Time Series (Daily)"][date]['5. volume'] });
+            setState({ volume: alphavantageUrlJson["Time Series (Daily)"][date]['6. volume'] });
             sendMessageToSnackbar(`Found data for ${ticker}`);
         } catch (error) {
             sendMessageToSnackbar(`No data for ticker ${ticker}`);
