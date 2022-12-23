@@ -1,6 +1,13 @@
 import React from 'react';
 import './Coin.css';
 
+import {
+    Card,
+    CardContent,
+    TextField,
+    Typography,
+} from "@mui/material";
+
 const CoinComponent = ({
     name,
     price,
@@ -11,8 +18,8 @@ const CoinComponent = ({
     priceChange
 }) => {
     return (
-        <div className='coin-container'>
-            <div className='coin-row'>
+        <Card className='coin-container'>
+            <Card className='coin-row'>
                 <div className='coin'>
                     <img src={image} alt='crypto' />
                     <h1>{name}</h1>
@@ -32,8 +39,8 @@ const CoinComponent = ({
                         Volume: {marketcap.toLocaleString()}
                     </p>
                 </div>
-            </div>
-        </div>
+            </Card>
+        </Card>
     );
 };
 

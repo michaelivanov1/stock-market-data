@@ -49,9 +49,9 @@ const HomeComponent = () => {
                     title="Purpose of application"
                     titleTypographyProps={{ variant: 'h5' }}
                 />
-                <CardContent>- Consolidate my knownledge of React.js/JavaScript.
-                    <br />- Consolidate my knowledge of pulling from API's and JSON files.
-                    <br />- Consolidate my knowledge in using the Material UI Component library for React
+                <CardContent>- Widen my knownledge of React.js/JavaScript.
+                    <br />- Widen my knowledge of pulling data from API's and JSON files.
+                    <br />- Widen my knowledge in using React library's such as MUI.
                 </CardContent>
                 <CardHeader
                     style={{ color: 'black', borderBottom: '1px solid #eaecef' }}
