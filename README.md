@@ -13,7 +13,7 @@ Tickers are fetched from JSON file(s) that are in the data-sets folder in this r
 
 **CRYPTO:**
 
-Fetch crypto data from the "coingecko" API such as ticker, price, mkt cap, volume, daily percentage changed.
+Fetch crypto data from the "coingecko" API such as ticker, price, mkt cap, volume, daily percentage changed
 
 
 
