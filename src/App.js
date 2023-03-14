@@ -53,7 +53,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <AppBar style={{ position: 'sticky', background: 'white', width: '100%', boxShadow: 'none', borderBottom: '1px solid black', marginBottom: 30 }}>
         <Toolbar>
-          <Typography variant="h4" color="black" align="center" width="100%">
+          <Typography variant="h4" color="black" align="center" width="100%" padding={"14px"} >
             Stock Market Data Visualizer
           </Typography>
         </Toolbar>
@@ -72,7 +72,7 @@ const App = () => {
             </ListItemButton>
           </ListItem>
           <Divider />
-          <ListSubheader>Search methods</ListSubheader>
+          <ListSubheader style={{ background: "lightgray", color: "black" }}>Search methods</ListSubheader>
           <ListItem>
             <ListItemButton component={Link} to="/searchstocks">
               <ListItemIcon>
@@ -90,7 +90,7 @@ const App = () => {
               <ListItemText primary="Search ETFs" />
             </ListItemButton>
           </ListItem>
-          <ListSubheader>Data visualization with graphs <b>*In progress*</b></ListSubheader>
+          <ListSubheader style={{ background: "lightgray", color: "black" }}>Data visualization with graphs <b>*In progress*</b></ListSubheader>
           <Divider />
           <ListItem>
             <ListItemButton component={Link} to="/datavisualization">
@@ -100,7 +100,7 @@ const App = () => {
               <ListItemText primary="Data Visualization" />
             </ListItemButton>
           </ListItem>
-          <ListSubheader>Crypto</ListSubheader>
+          <ListSubheader style={{ background: "lightgray", color: "black" }}>Crypto</ListSubheader>
           <Divider />
           <ListItem>
             <ListItemButton component={Link} to="/crypto">

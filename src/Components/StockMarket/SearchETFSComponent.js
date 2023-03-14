@@ -165,7 +165,7 @@ const SearchETFSComponent = (props) => {
     return (
         <ThemeProvider theme={theme}>
             <Box textAlign='center'>
-                <Card style={{ marginLeft: '25%', width: "50%", boxShadow: 'none' }}>
+                <Card style={{ marginLeft: '25%', width: "50%", boxShadow: 'none', paddingBottom: '20px' }}>
                     <CardHeader
                         title="Search an ETF:"
                         style={{ color: 'black', textAlign: "center" }}

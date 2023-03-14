@@ -261,7 +261,6 @@ const SearchIndividualStocksComponent = (props) => {
                             <Grid>
                                 <KeyboardDatePicker
                                     format="yyyy-MM-dd"
-                                    margin="normal"
                                     label="Pick Date"
                                     value={state.unformattedDate}
                                     inputValue={state.formattedDate}
@@ -372,7 +371,7 @@ const SearchIndividualStocksComponent = (props) => {
                     </TableContainer>
                 }
             </Box>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 };
 

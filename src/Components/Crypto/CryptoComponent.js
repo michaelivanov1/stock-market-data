@@ -48,7 +48,7 @@ const CryptoComponent = (props) => {
     );
 
     return (
-        <Card>
+        <Card style={{ backgroundColor: "lightgray", boxShadow: 'none', border: 'none' }}>
             <CardContent>
                 <Typography variant="h4" color="black" align="center" width="100%" marginBottom="20px">
                     Search a coin
@@ -67,7 +67,7 @@ const CryptoComponent = (props) => {
                 </div>
             </CardContent>
 
-            <CardContent style={{ marginLeft: '22%', width: "54%", boxShadow: 'none', maxHeight: '600px', overflow: 'auto' }}>
+            <CardContent style={{ marginLeft: '22%', width: "54%", maxHeight: '58vh', overflow: 'auto' }}>
                 {filteredCoins.map((coin) => {
                     return (
                         <CoinComponent

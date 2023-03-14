@@ -11,35 +11,82 @@ import "../../App.css";
 const HomeComponent = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Card style={{ marginLeft: '25%', width: '60%', boxShadow: 'none', maxHeight: '790px', overflow: 'auto' }}>
+            <Card
+                style={{
+                    marginLeft: '20%',
+                    width: '60%',
+                    boxShadow: 'none',
+                    maxHeight: '78vh',
+                    overflow: 'auto',
+                    backgroundColor: '#f5f5f5', // set a background color for the card
+                    borderRadius: '10px', // round the corners of the card
+                    border: '1px solid #eaecef', // add a border around the card
+                }}
+            >
                 <CardHeader
-                    style={{ color: 'black', borderBottom: '1px solid #eaecef' }}
+                    style={{
+                        color: '#333',
+                        borderBottom: '1px solid #eaecef',
+                        padding: '16px', // add some padding to the header
+                    }}
                     title="Description of application"
                     titleTypographyProps={{ variant: 'h5' }}
                 />
-                <CardContent>A personal project made to display American stock market data (and crypto) based on some user request or input.<b> It is a work in progress.</b>
+                <CardContent style={{ padding: '16px' }}>
+                    {/* adjust the font size and line height */}
+                    <p style={{ fontSize: '1.1rem', lineHeight: '1.5' }}>
+                        A personal project made to display American stock market data (and
+                        crypto) based on some user request or input. <b>It is a work in
+                            progress.</b>
+                    </p>
                 </CardContent>
                 <CardHeader
-                    style={{ color: 'black', borderBottom: '1px solid #eaecef' }}
+                    style={{
+                        color: '#333',
+                        borderBottom: '1px solid #eaecef',
+                        padding: '16px',
+                    }}
                     title="Features of application"
                     titleTypographyProps={{ variant: 'h5' }}
                 />
-                <CardContent>
-                    <p style={{ fontSize: 20, color: 'black' }}>INDIVIDUAL STOCKS:</p>
-                    Users can choose what American stock exchange they would like to view data from.
-                    <br /><br />
-                    Current exchanges implemented:
-                    <br />- ALL (Basically all American stocks)
-                    <br />- NYSE
-                    <br />- NASDAQ
-                    <br /><br />Users can then choose from a list of tickers and a table will be displayed with data such as open/close price, high/low price, and volume.
-                    <p style={{ fontSize: 20, color: 'black' }}>ETFs:</p>
-                    Users can choose which American ETFs (exchange traded funds) they would like to view data from.
-                    <br />
-                    Currently there are 500 American ETFs filtered by market cap that the user can choose.
-                    <p style={{ fontSize: 20, color: 'black' }}>DATA VISUALIZATION:</p>
-                    Users can choose a ticker and a graph will be displayed with the stock data since inception.
-                    <p style={{ fontSize: 20, color: 'black' }}>CRYPTO:</p>
+                <CardContent style={{ padding: '16px' }}>
+                    <p style={{ fontSize: '1.1rem', color: '#333', marginBottom: '8px' }}>
+                        INDIVIDUAL STOCKS:
+                    </p>
+                    <p style={{ fontSize: '1rem', lineHeight: '1.5', marginBottom: '16px' }}>
+                        Users can choose what American stock exchange they would like to view
+                        data from.
+                        <br />
+                        <br />
+                        Current exchanges implemented:
+                        <br />- ALL (Basically all American stocks)
+                        <br />- NYSE
+                        <br />- NASDAQ
+                        <br />
+                        <br />
+                        Users can then choose from a list of tickers and a table will be
+                        displayed with data such as open/close price, high/low price, and
+                        volume.
+                    </p>
+                    <p style={{ fontSize: '1.1rem', color: '#333', marginBottom: '8px' }}>
+                        ETFs:
+                    </p>
+                    <p style={{ fontSize: '1rem', lineHeight: '1.5', marginBottom: '16px' }}>
+                        Users can choose which American ETFs (exchange traded funds) they
+                        would like to view data from.
+                        <br />
+                        Currently there are 500 American ETFs filtered by market cap that
+                        the user can choose.
+                    </p>
+                    <p style={{ fontSize: '1.1rem', color: '#333', marginBottom: '8px' }}>
+                        DATA VISUALIZATION:
+                    </p>
+                    <p style={{ fontSize: '1rem', lineHeight: '1.5', marginBottom: '16px' }}>
+                        Users can choose a ticker and a graph will be displayed with the
+                        stock data since inception.
+                    </p>
+                    <p style={{ fontSize: '1.1rem', color: '#333', marginBottom: '8px' }}>
+                        CRYPTO:</p>
                     Users can search/view data for a variable number of coins.
                     <br />
                     Data such as ticker, price, volume, percentage change (24hr), and marketcap.
